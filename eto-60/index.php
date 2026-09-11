@@ -16,7 +16,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
   <title>Ebenezer Taiwo Olushina's 60th RSVP</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --navy:#0d1b3e;
@@ -27,7 +27,6 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     --gold-light:#e3cd92;
     --gold-pale:#f0e4c4;
     --white:#ffffff;
-    --paper:#fbfaf7;
     --ink:#1a2236;
     --muted:#5d6577;
     --line:rgba(201,169,97,0.28);
@@ -35,6 +34,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
   *{box-sizing:border-box;}
   body{
     margin:0;
+    position:relative;
     background:var(--navy-deep);
     color:var(--ink);
     font-family:'Montserrat',sans-serif;
@@ -45,26 +45,32 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
   /* ---------- HERO ---------- */
   .eto-hero{
     position:relative;
-    background:
-      radial-gradient(ellipse at 20% 15%, rgba(30,58,138,0.55) 0%, transparent 55%),
-      radial-gradient(ellipse at 85% 80%, rgba(30,58,138,0.4) 0%, transparent 50%),
-      linear-gradient(160deg,#0d1b3e 0%,#070f26 55%,#0b1730 100%);
+    background:transparent;
     color:var(--white);
     text-align:center;
     padding:clamp(64px,12vw,120px) 20px clamp(56px,10vw,96px);
     overflow:hidden;
   }
+  /* One continuous marbled navy field behind the whole page. Fixed so the
+     veining stays put while the content scrolls over it. */
   .eto-marble{
-    position:absolute;
+    position:fixed;
     inset:0;
     width:100%;
     height:100%;
     pointer-events:none;
+    z-index:0;
+  }
+  .eto-hero,
+  .eto-strip,
+  .eto-form-section,
+  .eto-footer{
+    position:relative;
     z-index:1;
   }
   .eto-hero-inner{position:relative;z-index:2;}
   .eto-sixty{
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Playfair Display',serif;
     font-weight:700;
     line-height:0.86;
     letter-spacing:-0.01em;
@@ -102,7 +108,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     line-height:1.5;
   }
   .eto-occasion{
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Playfair Display',serif;
     font-style:italic;
     font-size:clamp(1.05rem,3vw,1.5rem);
     color:rgba(255,255,255,0.86);
@@ -121,6 +127,11 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     color:rgba(255,255,255,0.9);
   }
   .eto-meta span{white-space:nowrap;}
+  /* The details strip below repeats date/time/venue. On narrow screens that
+     reads as the same facts twice, so the hero line is desktop-only. */
+  @media (max-width:768px){
+    .eto-meta{display:none;}
+  }
   .eto-meta i{
     display:inline-block;
     width:4px;height:4px;
@@ -129,7 +140,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     vertical-align:middle;
   }
   .eto-followup{
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Playfair Display',serif;
     font-style:italic;
     font-size:clamp(0.95rem,2.6vw,1.15rem);
     color:var(--gold-light);
@@ -153,7 +164,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
   }
   .eto-count-num{
     display:block;
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Playfair Display',serif;
     font-size:clamp(1.5rem,5vw,2.1rem);
     font-weight:600;
     color:var(--gold-pale);
@@ -170,9 +181,11 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
 
   /* ---------- DETAILS STRIP ---------- */
   .eto-strip{
-    background:var(--royal);
+    background:transparent;
     color:var(--white);
     padding:clamp(34px,6vw,52px) 20px;
+    border-top:1px solid rgba(201,169,97,0.18);
+    border-bottom:1px solid rgba(201,169,97,0.18);
   }
   .eto-strip-grid{
     display:grid;
@@ -190,7 +203,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     margin:0 0 10px;
   }
   .eto-strip-item p{
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Playfair Display',serif;
     font-size:clamp(1.05rem,2.8vw,1.3rem);
     margin:0;
     line-height:1.45;
@@ -199,7 +212,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
 
   /* ---------- FORM SECTION ---------- */
   .eto-form-section{
-    background:var(--paper);
+    background:transparent;
     padding:clamp(48px,9vw,84px) 20px clamp(60px,10vw,96px);
     scroll-margin-top:24px;
   }
@@ -257,16 +270,16 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     font-size:0.66rem;
     letter-spacing:0.26em;
     text-transform:uppercase;
-    color:var(--royal);
+    color:var(--gold);
     font-weight:600;
     margin:0 0 12px;
   }
   .eto-section-title{
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Playfair Display',serif;
     font-size:clamp(2rem,6vw,3rem);
     font-weight:600;
     letter-spacing:0.04em;
-    color:var(--navy);
+    color:var(--gold-pale);
     margin:0;
   }
   .eto-card{
@@ -279,7 +292,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     box-shadow:0 18px 50px rgba(13,27,62,0.10);
   }
   .eto-card-heading{
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Playfair Display',serif;
     font-size:clamp(1.4rem,4vw,1.85rem);
     font-weight:600;
     text-align:center;
@@ -362,7 +375,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
   .eto-radio-group input[type=radio]{accent-color:var(--royal);width:16px;height:16px;}
 
   .eto-note{
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Playfair Display',serif;
     font-style:italic;
     font-size:1rem;
     color:var(--muted);
@@ -385,7 +398,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     font-weight:600;
   }
   .eto-dress p{
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Playfair Display',serif;
     font-size:1.15rem;
     color:var(--navy);
     margin:0;
@@ -411,7 +424,27 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     transform:translateY(-1px);
     box-shadow:0 10px 26px rgba(13,27,62,0.28);
   }
-  .eto-submit:disabled{opacity:0.6;cursor:not-allowed;}
+  .eto-submit:disabled{opacity:0.75;cursor:not-allowed;}
+  .eto-submit{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+  }
+  .eto-spinner{
+    display:none;
+    width:14px;
+    height:14px;
+    border:2px solid rgba(240,228,196,0.35);
+    border-top-color:var(--gold-pale);
+    border-radius:50%;
+    animation:eto-spin .6s linear infinite;
+  }
+  .eto-submit.is-loading .eto-spinner{display:inline-block;}
+  @keyframes eto-spin{to{transform:rotate(360deg);}}
+  @media (prefers-reduced-motion:reduce){
+    .eto-spinner{animation-duration:1.6s;}
+  }
 
   .eto-form-message{
     margin:0 0 16px;
@@ -439,7 +472,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     color:var(--white);
   }
   .eto-confirmation h4{
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Playfair Display',serif;
     font-size:clamp(1.6rem,5vw,2.2rem);
     font-weight:600;
     color:var(--gold-pale);
@@ -447,7 +480,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     letter-spacing:0.04em;
   }
   .eto-confirmation p{
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Playfair Display',serif;
     font-size:clamp(1.05rem,3vw,1.25rem);
     line-height:1.6;
     margin:0;
@@ -456,8 +489,9 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
 
   /* ---------- FOOTER ---------- */
   .eto-footer{
-    background:var(--navy-deep);
-    color:rgba(255,255,255,0.6);
+    background:transparent;
+    border-top:1px solid rgba(201,169,97,0.18);
+    color:rgba(255,255,255,0.62);
     text-align:center;
     padding:clamp(30px,5vw,46px) 20px;
     font-size:0.72rem;
@@ -474,8 +508,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
 </head>
 <body>
 
-<header class="eto-hero">
-  <svg class="eto-marble" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<svg class="eto-marble" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
     <defs>
       <linearGradient id="etoGround" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stop-color="#12244d"/>
@@ -511,6 +544,8 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
       <path d="M-40 730 C 220 690, 450 800, 720 745 S 1040 660, 1240 720" stroke="url(#etoVeinGold)" stroke-width="1" opacity="0.6"/>
     </g>
   </svg>
+
+<header class="eto-hero">
   <div class="eto-hero-inner eto-wrap">
     <p class="eto-name">Ebenezer Taiwo Olushina</p>
     <h1 class="eto-sixty">60</h1>
@@ -605,7 +640,18 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
           <input type="tel" id="phone" name="phone" required>
         </div>
 
-        <button type="submit" class="eto-submit">Submit</button>
+        <fieldset class="eto-fieldset">
+          <legend>Will you be attending? <span class="eto-required">*</span></legend>
+          <div class="eto-radio-group">
+            <label><input type="radio" name="attending" value="yes" required> Yes</label>
+            <label><input type="radio" name="attending" value="no"> No</label>
+          </div>
+        </fieldset>
+
+        <button type="submit" class="eto-submit" id="eto-submit">
+          <span class="eto-submit-label">Submit</span>
+          <span class="eto-spinner" aria-hidden="true"></span>
+        </button>
       </form>
     </div>
   </div>
@@ -635,7 +681,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
   function updateCountdown(){
     const diff = eventDate - new Date().getTime();
     if (diff <= 0){
-      countdownEl.innerHTML = '<span style="font-family:\'Cormorant Garamond\',serif;font-size:1.5rem;color:#f0e4c4;">Celebrating Today!</span>';
+      countdownEl.innerHTML = '<span style="font-family:\'Playfair Display\',serif;font-size:1.5rem;color:#f0e4c4;">Celebrating Today!</span>';
       return;
     }
     const d = Math.floor(diff / 86400000);
@@ -676,6 +722,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     messageEl.textContent = '';
     const submitBtn = form.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
+    submitBtn.classList.add('is-loading');
 
     fetch(form.action, {
       method: 'POST',
@@ -712,6 +759,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
       })
       .finally(function(){
         submitBtn.disabled = false;
+        submitBtn.classList.remove('is-loading');
       });
   });
 })();
