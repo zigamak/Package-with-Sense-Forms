@@ -169,6 +169,86 @@ The sync endpoint never marks rows as synced — it's a dumb append-only log. Th
 Script tracks its own `last_seen_id` in `PropertiesService` and only advances it after a
 batch is fully written to the Sheet, so a failed run safely retries next time.
 
+## Deployment (GitHub -> cPanel auto-pull)
+
+Pushing to `main` updates production automatically: GitHub fires a webhook, `deploy.php`
+verifies the signature and runs `git fetch` + `git reset --hard origin/main`.
+
+**Server details**
+
+| | |
+|---|---|
+| SSH | `ssh adeisfjg@199.188.201.125 -p 21098` |
+| Checkout path | `/home/adeisfjg/packagewithsense.com/forms` |
+| Live URL | `https://packagewithsense.com/forms/` |
+| Branch | `main` |
+
+### One-time setup
+
+1. **Deploy key (server -> GitHub).** On the server:
+   ```
+   ssh-keygen -t ed25519 -C "cpanel-deploy" -f ~/.ssh/github_deploy_key
+   printf 'Host github.com\n  IdentityFile ~/.ssh/github_deploy_key\n  User git\n' >> ~/.ssh/config
+   cat ~/.ssh/github_deploy_key.pub
+   ```
+   Paste that public key into GitHub -> Settings -> Deploy Keys. Leave *Allow write
+   access* unchecked.
+
+2. **Attach git to the existing files.** The directory already holds live files (including
+   `.env` and `uploads/`, which must survive), so `git clone` into it will fail. Init in
+   place instead:
+   ```
+   cd /home/adeisfjg/packagewithsense.com/forms
+   git init
+   git remote add origin git@github.com:zigamak/Package-with-Sense-Forms.git
+   git fetch origin main
+   git reset --hard origin/main
+   ```
+   `.env`, `uploads/`, and `logs/` are gitignored, so `reset --hard` leaves them untouched.
+
+3. **Set the webhook secret.** Generate one and add it to `rsvp-core/.env` on the server:
+   ```
+   php -r "echo bin2hex(random_bytes(24));"
+   ```
+   ```
+   DEPLOY_SECRET=<that value>
+   ```
+
+4. **Create the webhook.** GitHub -> Settings -> Webhooks -> Add webhook:
+   payload URL `https://packagewithsense.com/forms/deploy.php`, content type
+   `application/json`, the same secret, and *Just the push event*.
+
+5. **Test.** Push a trivial change, then check GitHub -> Webhooks -> Recent Deliveries for
+   a `200`. Failures are also logged to `rsvp-core/logs/php-error.log`.
+
+### If `exec()` is disabled
+
+Some shared cPanel plans block it. Check with:
+
+```
+php -r "echo function_exists('exec') ? 'exec OK' : 'exec DISABLED';"
+```
+
+If disabled, skip the webhook and use a cron job (cPanel -> Cron Jobs) every 5 minutes:
+
+```
+*/5 * * * * cd /home/adeisfjg/packagewithsense.com/forms && git fetch --quiet origin main && git reset --hard origin/main >> ~/deploy.log 2>&1
+```
+
+### What deployment does NOT update
+
+**`rsvp-core/.env` is gitignored and is never touched by a push.** DB credentials,
+`SYNC_API_KEY`, and `DEPLOY_SECRET` live only on the server. A credential or DNS change is
+therefore always a manual edit:
+
+```
+ssh adeisfjg@199.188.201.125 -p 21098
+nano /home/adeisfjg/packagewithsense.com/forms/rsvp-core/.env
+```
+
+Same for `uploads/` and `logs/` — they hold guest data and runtime output, stay out of
+git, and are preserved across deploys.
+
 ## Database schema
 
 Two shared tables, reused across forms and future client projects — not just this wedding.
