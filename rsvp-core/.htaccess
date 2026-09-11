@@ -1,0 +1,9 @@
+# Works unchanged on localhost (XAMPP) and in production (dropped into the
+# WordPress root) — it only governs files inside this folder, no rewriting.
+Options -Indexes
+
+# Never serve credentials/schema over HTTP, even if requested by exact name.
+# submit.php and get-new.php stay reachable — forms and the Apps Script need them.
+<FilesMatch "^(config\.php|schema\.sql|\.env)$">
+    Require all denied
+</FilesMatch>

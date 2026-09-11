@@ -1,0 +1,9 @@
+# Proof-of-payment uploads. Filenames are randomized (submit.php), so this
+# folder is unlisted; this .htaccess makes sure nothing here ever runs as a
+# script even if an executable file slipped past MIME validation.
+Options -Indexes -ExecCGI
+AddHandler default-handler .php .php5 .php7 .phtml .pl .py .cgi .asp .aspx
+
+<FilesMatch "\.(php|php[0-9]?|phtml|pl|py|cgi|asp|aspx|s?html?)$">
+    Require all denied
+</FilesMatch>

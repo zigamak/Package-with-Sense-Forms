@@ -1,0 +1,21 @@
+# Secrets — never commit. Use rsvp-core/.env.example as the template.
+rsvp-core/.env
+
+# Guest-uploaded proof-of-payment files (keep the folder + its .htaccess).
+rsvp-core/uploads/*
+!rsvp-core/uploads/.htaccess
+
+# Runtime error log (keep the folder + its .htaccess).
+rsvp-core/logs/*
+!rsvp-core/logs/.htaccess
+
+# Stray cPanel/Apache error logs dropped next to the pages.
+error_log
+**/error_log
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
