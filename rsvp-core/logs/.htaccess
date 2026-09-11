@@ -1,0 +1,2 @@
+# Error logs may contain stack traces / query fragments — never serve over HTTP.
+Require all denied
