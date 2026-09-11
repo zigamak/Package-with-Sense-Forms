@@ -53,6 +53,13 @@ const PWS_ALLOWED_FORMS = ['trad-white', 'white-only'];
 |---|---|---|
 | `sinmi-warami-trad-white/` | `trad-white` | `sinmi-warami-trad-white` |
 | `warami-sinmi/` | `white-only` | `sinmi-warami` (unfiltered — see below) |
+| `eto-60/` | `eto-60` | *(no Apps Script yet)* |
+
+`eto-60/` is a standalone RSVP page for a 60th birthday — navy/royal/gold, three fields
+(Title, Name, Phone), no guestbook and no uploads. `title` is not one of
+`PWS_TOP_LEVEL_FIELDS`, so it lands in the `payload` JSON like any other form-specific
+field. Until an Apps Script exists for the `eto-60` slug, its RSVPs are stored in
+`rsvp_submissions` but do not reach any Google Sheet.
 
 ## Why real folders, not `/forms/`
 
@@ -183,28 +190,39 @@ verifies the signature and runs `git fetch` + `git reset --hard origin/main`.
 | Live URL | `https://packagewithsense.com/forms/` |
 | Branch | `main` |
 
+### How it works: clone outside, sync in
+
+cPanel's Git Version Control refuses to init or clone into a directory that already
+contains files, and `forms/` holds the live site plus `.env`, `uploads/` and `logs/`. So
+the repo is cloned **outside** the web root and its files are copied in after each pull:
+
+```
+/home/adeisfjg/repos/pws-forms          <- git checkout (cloned once)
+        |  rsync -a, excluding .git .env uploads logs
+        v
+/home/adeisfjg/packagewithsense.com/forms  <- live site
+```
+
+Nothing is ever deleted. There is no `--delete` flag, so a file removed from the repo is
+left alone on the server. The excludes are **skip** rules, not removals: `.env`,
+`uploads/` and `logs/` are gitignored and exist only on the server, so the sync simply
+steps over them and they survive every deploy untouched. `.git` is excluded too, because
+a `.git` directory under the web root would expose the whole repo history over HTTP.
+
 ### One-time setup
 
-1. **Deploy key (server -> GitHub).** On the server:
-   ```
-   ssh-keygen -t ed25519 -C "cpanel-deploy" -f ~/.ssh/github_deploy_key
-   printf 'Host github.com\n  IdentityFile ~/.ssh/github_deploy_key\n  User git\n' >> ~/.ssh/config
-   cat ~/.ssh/github_deploy_key.pub
-   ```
-   Paste that public key into GitHub -> Settings -> Deploy Keys. Leave *Allow write
-   access* unchecked.
+1. **Clone the repo outside the web root.** cPanel -> Git Version Control -> Create, with
+   *Clone a Repository* ON:
+   - Clone URL: `https://github.com/zigamak/Package-with-Sense-Forms.git`
+   - Repository Path: `repos/pws-forms`
 
-2. **Attach git to the existing files.** The directory already holds live files (including
-   `.env` and `uploads/`, which must survive), so `git clone` into it will fail. Init in
-   place instead:
-   ```
-   cd /home/adeisfjg/packagewithsense.com/forms
-   git init
-   git remote add origin git@github.com:zigamak/Package-with-Sense-Forms.git
-   git fetch origin main
-   git reset --hard origin/main
-   ```
-   `.env`, `uploads/`, and `logs/` are gitignored, so `reset --hard` leaves them untouched.
+   The repo is public, so no deploy key is needed. (If it is ever made private, add one:
+   `ssh-keygen -t ed25519 -f ~/.ssh/github_deploy_key`, paste the `.pub` into GitHub ->
+   Settings -> Deploy Keys, and use the `git@github.com:` clone URL instead.)
+
+2. **Put `deploy.php` in the live directory.** Upload it via File Manager to
+   `packagewithsense.com/forms/deploy.php`. After the first successful deploy it is kept
+   in sync from the repo like any other tracked file.
 
 3. **Set the webhook secret.** Generate one and add it to `rsvp-core/.env` on the server:
    ```
@@ -229,17 +247,23 @@ Some shared cPanel plans block it. Check with:
 php -r "echo function_exists('exec') ? 'exec OK' : 'exec DISABLED';"
 ```
 
-If disabled, skip the webhook and use a cron job (cPanel -> Cron Jobs) every 5 minutes:
+If disabled, skip the webhook entirely and use a cron job (cPanel -> Cron Jobs) every 5
+minutes. It does the same two steps `deploy.php` does -- pull the checkout, then sync it
+into the live directory:
 
 ```
-*/5 * * * * cd /home/adeisfjg/packagewithsense.com/forms && git fetch --quiet origin main && git reset --hard origin/main >> ~/deploy.log 2>&1
+*/5 * * * * cd /home/adeisfjg/repos/pws-forms && git fetch --quiet origin main && git reset --hard origin/main && rsync -a --exclude=.git --exclude=.env --exclude=uploads --exclude=logs /home/adeisfjg/repos/pws-forms/ /home/adeisfjg/packagewithsense.com/forms/ >> ~/deploy.log 2>&1
 ```
+
+With cron there is no webhook and no signature check, so `DEPLOY_SECRET` is not needed --
+but pushes take up to 5 minutes to appear instead of being instant.
 
 ### What deployment does NOT update
 
 **`rsvp-core/.env` is gitignored and is never touched by a push.** DB credentials,
-`SYNC_API_KEY`, and `DEPLOY_SECRET` live only on the server. A credential or DNS change is
-therefore always a manual edit:
+`SYNC_API_KEY`, and `DEPLOY_SECRET` live only on the server, in the **live** directory
+(`packagewithsense.com/forms/rsvp-core/.env`) -- not in the checkout at `repos/pws-forms`.
+A credential or DNS change is therefore always a manual edit:
 
 ```
 ssh adeisfjg@199.188.201.125 -p 21098
