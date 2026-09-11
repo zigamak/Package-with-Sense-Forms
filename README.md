@@ -49,15 +49,10 @@ listed in `PWS_ALLOWED_FORMS` (`rsvp-core/config.php`), currently:
 const PWS_ALLOWED_FORMS = ['trad-white', 'white-only'];
 ```
 
-> **Known bug — both pages submit the same slug.**
-> `sinmi-warami-trad-white/index.php` sets `PWS_FORM_SLUG = 'white-only'` (line 5) and its
-> RSVP form posts a hardcoded `<input type="hidden" name="form_slug" value="white-only">`
-> (line 705) — identical to `warami-sinmi/`. Since
-> `apps-script-sinmi-warami-trad-white.gs` filters on `FORM_SLUG_FILTER = 'trad-white'`,
-> that sheet tab receives **nothing**, and trad-white RSVPs are indistinguishable from
-> white-only ones in the database. Fix by setting the trad-white page's constant to
-> `'trad-white'` and having both RSVP forms emit `PWS_FORM_SLUG` rather than a literal —
-> the notes forms on both pages already do this correctly.
+| Page | `PWS_FORM_SLUG` | Sheet tab |
+|---|---|---|
+| `sinmi-warami-trad-white/` | `trad-white` | `sinmi-warami-trad-white` |
+| `warami-sinmi/` | `white-only` | `sinmi-warami` (unfiltered — see below) |
 
 ## Why real folders, not `/forms/`
 
@@ -159,9 +154,16 @@ Which script to use:
 | `apps-script-sinmi-warami.gs` | `sinmi-warami` | `null` — takes every form's submissions |
 | `apps-script-sinmi-warami-trad-white.gs` | `sinmi-warami-trad-white` | `'trad-white'` |
 
-`FORM_SLUG_FILTER = null` means "append every row regardless of slug". Because of the slug
-bug noted above, the `sinmi-warami` tab currently receives *all* RSVPs from both pages
-while the `sinmi-warami-trad-white` tab receives none.
+`FORM_SLUG_FILTER = null` means "append every row regardless of slug", so the
+`sinmi-warami` tab collects submissions from **both** pages. The
+`sinmi-warami-trad-white` tab is filtered to `'trad-white'` and therefore holds only that
+form's rows — trad-white RSVPs appear in both tabs by design. Set
+`FORM_SLUG_FILTER = 'white-only'` in `apps-script-sinmi-warami.gs` if you'd rather each
+tab hold exactly one form.
+
+**The `SYNC_API_KEY` constant in each `.gs` file is a placeholder.** Paste the real key
+(matching `rsvp-core/.env` on the server) into the Apps Script editor for each project —
+it must never be committed.
 
 The sync endpoint never marks rows as synced — it's a dumb append-only log. The Apps
 Script tracks its own `last_seen_id` in `PropertiesService` and only advances it after a

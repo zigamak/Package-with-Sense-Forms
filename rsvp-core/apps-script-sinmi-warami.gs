@@ -73,7 +73,9 @@ const FORM_SLUG_FILTER = null;
 // Currently deployed under /forms/ — drop that segment if/when the folders
 // move to the WordPress root.
 const ENDPOINT_URL = 'https://packagewithsense.com/forms/rsvp-core/get-new.php';
-const SYNC_API_KEY = 'f327d681b61f4169c7aab77b4a60034758728db8e45d46c7';
+// Paste the real key here in the Apps Script editor only — never commit it.
+// Must match SYNC_API_KEY in rsvp-core/.env on the server.
+const SYNC_API_KEY = 'PASTE_SYNC_API_KEY_IN_APPS_SCRIPT_EDITOR';
 
 // syncAllRsvps() only rebuilds rows created_at >= local midnight today when
 // this is true. Set to false to go back to a full-history rebuild.
