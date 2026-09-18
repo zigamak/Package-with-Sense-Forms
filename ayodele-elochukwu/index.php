@@ -308,6 +308,109 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
     color:var(--gold-pale);margin:0;
   }
 
+  .ae-story{
+    max-width:660px;margin:0 auto;text-align:center;
+    font-size:0.97rem;line-height:1.95;color:var(--muted);font-weight:300;
+  }
+  .ae-story p{margin:0 0 20px;}
+  .ae-story p:last-child{margin-bottom:0;}
+  .ae-story-open{
+    font-family:'Playfair Display',serif;font-style:italic;
+    font-size:clamp(1.1rem,3vw,1.35rem);color:var(--teal-deep);
+  }
+  .ae-story-date{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(1.05rem,2.8vw,1.25rem);color:var(--ink);
+  }
+  .ae-story-quote{
+    font-family:'Great Vibes',cursive;
+    font-size:clamp(1.6rem,4.6vw,2.4rem);
+    color:var(--gold);line-height:1.35;
+    padding:8px 0;
+  }
+  .ae-event-note{
+    font-size:0.8rem;line-height:1.6;color:var(--muted);
+    border-top:1px solid var(--line);
+    margin-top:14px;padding-top:12px;font-style:italic;
+  }
+  .ae-dress-groups{
+    display:flex;justify-content:center;flex-wrap:wrap;
+    gap:clamp(30px,7vw,72px);margin-top:10px;
+  }
+  .ae-dress-group h3{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(1.05rem,2.8vw,1.3rem);
+    color:var(--gold-light);margin:0 0 16px;font-weight:600;
+    letter-spacing:0.04em;
+  }
+
+  /* ---------- ASO EBI ---------- */
+  .ae-asoebi-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:clamp(18px,3vw,28px);margin-bottom:clamp(24px,4vw,36px);
+  }
+  .ae-asoebi-card{
+    background:var(--white);border:1px solid var(--line);border-radius:8px;
+    padding:clamp(22px,4vw,30px);
+    box-shadow:0 10px 34px rgba(15,122,130,0.07);
+  }
+  .ae-asoebi-card h3{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(1.1rem,3vw,1.35rem);
+    color:var(--teal-deep);margin:0 0 16px;font-weight:600;text-align:center;
+  }
+  .ae-price-list{list-style:none;margin:0;padding:0;}
+  .ae-price-list li{
+    display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+    padding:11px 0;border-bottom:1px dashed rgba(200,149,43,0.28);
+    font-size:0.9rem;color:var(--muted);font-weight:300;
+  }
+  .ae-price-list li:last-child{border-bottom:none;}
+  .ae-price{
+    font-family:'Playfair Display',serif;
+    font-size:1.02rem;color:var(--teal-deep);font-weight:600;white-space:nowrap;
+  }
+  .ae-payment{
+    max-width:520px;margin:0 auto;
+    background:linear-gradient(150deg,var(--teal-dark) 0%,var(--teal-deep) 100%);
+    border-radius:8px;padding:clamp(24px,4vw,32px);text-align:center;
+    box-shadow:0 14px 40px rgba(10,86,92,0.2);
+  }
+  .ae-payment h3{
+    font-family:'Great Vibes',cursive;font-weight:400;
+    font-size:clamp(1.5rem,4vw,2rem);color:var(--gold-pale);margin:0 0 18px;
+  }
+  .ae-payment-rows{margin:0 0 18px;}
+  .ae-payment-rows div{
+    display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+    padding:10px 0;border-bottom:1px solid rgba(242,227,192,0.18);
+  }
+  .ae-payment-rows div:last-child{border-bottom:none;}
+  .ae-payment-rows dt{
+    font-size:0.63rem;letter-spacing:0.18em;text-transform:uppercase;
+    color:rgba(242,227,192,0.75);margin:0;
+  }
+  .ae-payment-rows dd{
+    margin:0;font-size:0.95rem;color:var(--white);font-weight:500;
+    text-align:right;overflow-wrap:anywhere;
+  }
+  .ae-payment-note{
+    font-size:0.84rem;line-height:1.7;color:rgba(247,244,238,0.86);margin:0 0 10px;
+  }
+  .ae-payment-note a{color:var(--gold-light);text-decoration:none;font-weight:500;white-space:nowrap;}
+  .ae-payment-note a:hover{text-decoration:underline;}
+  .ae-payment-warn{
+    font-size:0.76rem;line-height:1.6;margin:0;
+    color:var(--gold-light);font-style:italic;
+    border-top:1px solid rgba(242,227,192,0.2);padding-top:12px;
+  }
+
+  .ae-form-note{
+    font-size:0.8rem;line-height:1.65;color:var(--muted);
+    margin:0 0 14px;font-style:italic;
+  }
+  .ae-form-note a{color:var(--teal);font-weight:500;white-space:nowrap;}
+
   /* ---------- FORM ---------- */
   .ae-card{
     max-width:660px;margin:0 auto;
@@ -463,6 +566,7 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
   <a href="#events">Events</a>
   <a href="#gallery">Gallery</a>
   <a href="#dresscode">Dress Code</a>
+  <a href="#asoebi">Aso Ebi</a>
   <a href="#rsvp">RSVP</a>
 </aside>
 
@@ -497,9 +601,20 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
     <div class="ae-section-head">
       <p class="ae-eyebrow">Our Journey</p>
       <h2 class="ae-title">Our Love Story</h2>
-      <p class="ae-lead">
-        Two hearts, two families, one beautiful beginning. We would be honoured to have you
-        with us as we say &ldquo;I do&rdquo; and celebrate the start of our forever.
+    </div>
+
+    <div class="ae-story">
+      <p class="ae-story-open">Some of life&rsquo;s best gifts don&rsquo;t come wrapped.</p>
+      <p class="ae-story-date">Ours came on Christmas Day, 2022.</p>
+      <p>
+        What began as a simple meeting grew into laughter, friendship, love, and a
+        beautiful life together. Looking back, we now know that the greatest gift of that
+        Christmas wasn&rsquo;t under the tree &mdash; it was finding each other.
+      </p>
+      <p class="ae-story-quote">My Christmas Present &rsquo;22, now, my forever.</p>
+      <p>
+        As we begin our next chapter, we would love for you to join us in celebrating
+        our love.
       </p>
     </div>
   </div>
@@ -515,14 +630,21 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
       <div class="ae-event">
         <h3>Traditional Wedding</h3>
         <p class="ae-event-sub">Ceremony</p>
-        <p><strong>Date to be announced</strong></p>
-        <p>Venue details to follow</p>
+        <p><strong>Saturday, 21st November 2026</strong></p>
+        <p><strong>2:00 PM</strong> prompt</p>
+        <p>Monarch Event Centre</p>
+        <p class="ae-event-note">
+          Kindly arrive on time so seating can be organised smoothly.
+        </p>
       </div>
       <div class="ae-event">
-        <h3>White Wedding</h3>
-        <p class="ae-event-sub">Ceremony &amp; Reception</p>
-        <p><strong>Saturday, 21st November 2026</strong></p>
-        <p>Venue details to follow</p>
+        <h3>Reception</h3>
+        <p class="ae-event-sub">&amp; After Party</p>
+        <p><strong>Immediately after</strong></p>
+        <p>the traditional ceremony</p>
+        <p class="ae-event-note">
+          Same venue &mdash; stay with us and celebrate into the night.
+        </p>
       </div>
     </div>
   </div>
@@ -551,12 +673,70 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
       <h2 class="ae-title">Dress Code</h2>
       <p class="ae-lead">We would love to see you in our colours as we celebrate.</p>
     </div>
-    <div class="ae-swatches">
-      <span class="ae-swatch" style="background:#0f7a82;" title="Teal"></span>
-      <span class="ae-swatch" style="background:#c8952b;" title="Gold"></span>
-      <span class="ae-swatch" style="background:#f7f4ee;" title="Ivory"></span>
+    <div class="ae-dress-groups">
+      <div class="ae-dress-group">
+        <h3>Ladies</h3>
+        <div class="ae-swatches">
+          <span class="ae-swatch" style="background:#40e0d0;" title="Turquoise"></span>
+        </div>
+        <p class="ae-dress-name">Turquoise</p>
+      </div>
+      <div class="ae-dress-group">
+        <h3>Gentlemen</h3>
+        <div class="ae-swatches">
+          <span class="ae-swatch" style="background:#b0d4e8;" title="Powder Blue"></span>
+        </div>
+        <p class="ae-dress-name">Powder Blue</p>
+      </div>
     </div>
-    <p class="ae-dress-name">Teal &middot; Gold &middot; Ivory</p>
+  </div>
+</section>
+
+<section class="ae-section" id="asoebi">
+  <div class="ae-wrap">
+    <div class="ae-section-head">
+      <p class="ae-eyebrow">Aso Ebi</p>
+      <h2 class="ae-title">Fabric &amp; Pricing</h2>
+      <p class="ae-lead">
+        Aso Ebi is available for purchase. Please call to confirm fabric is still
+        available <strong>before</strong> making any payment.
+      </p>
+    </div>
+
+    <div class="ae-asoebi-grid">
+      <div class="ae-asoebi-card">
+        <h3>Ladies</h3>
+        <ul class="ae-price-list">
+          <li><span>Gele</span><span class="ae-price">&#8358;20,000</span></li>
+        </ul>
+      </div>
+
+      <div class="ae-asoebi-card">
+        <h3>Gentlemen</h3>
+        <ul class="ae-price-list">
+          <li><span>10 yards with fila</span><span class="ae-price">&#8358;150,000</span></li>
+          <li><span>5 yards with fila</span><span class="ae-price">&#8358;80,000</span></li>
+          <li><span>Fila only</span><span class="ae-price">&#8358;10,000</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ae-payment">
+      <h3>Payment Details</h3>
+      <dl class="ae-payment-rows">
+        <div><dt>Account Name</dt><dd>Okeoghene A. Ekere</dd></div>
+        <div><dt>Bank</dt><dd>Stanbic IBTC</dd></div>
+        <div><dt>Account Number</dt><dd>0023138734</dd></div>
+      </dl>
+      <p class="ae-payment-note">
+        Kindly forward proof of payment to
+        <a href="tel:07035161687">070 3516 1687</a> &amp;
+        <a href="tel:08142025400">081 4202 5400</a>
+      </p>
+      <p class="ae-payment-warn">
+        Please confirm availability on the numbers above before paying.
+      </p>
+    </div>
   </div>
 </section>
 
@@ -642,6 +822,35 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
             <option value="Other">Other</option>
           </select>
         </div>
+
+        <fieldset class="ae-fieldset" hidden data-toggle="attending:yes">
+          <legend>Would you like to purchase Aso Ebi?</legend>
+          <div class="ae-radio-group">
+            <label><input type="radio" name="asoebi_purchase" value="yes"> Yes</label>
+            <label><input type="radio" name="asoebi_purchase" value="no"> No</label>
+          </div>
+
+          <div class="ae-field" hidden data-toggle="asoebi_purchase:yes">
+            <label for="asoebi_item">Item</label>
+            <select id="asoebi_item" name="asoebi_item">
+              <option value="">-</option>
+              <option value="Gele - N20,000">Ladies &mdash; Gele (&#8358;20,000)</option>
+              <option value="10 yards with fila - N150,000">Gentlemen &mdash; 10 yards with fila (&#8358;150,000)</option>
+              <option value="5 yards with fila - N80,000">Gentlemen &mdash; 5 yards with fila (&#8358;80,000)</option>
+              <option value="Fila only - N10,000">Gentlemen &mdash; Fila only (&#8358;10,000)</option>
+            </select>
+          </div>
+
+          <div class="ae-field" hidden data-toggle="asoebi_purchase:yes">
+            <label for="asoebi_qty">Quantity</label>
+            <input type="number" id="asoebi_qty" name="asoebi_qty" min="1" value="1">
+          </div>
+
+          <p class="ae-form-note" hidden data-toggle="asoebi_purchase:yes">
+            Please call <a href="tel:07035161687">070 3516 1687</a> to confirm fabric is
+            still available before you pay. Payment details are in the Aso Ebi section above.
+          </p>
+        </fieldset>
 
         <div class="ae-field" hidden data-toggle="attending:no">
           <label for="message">Leave A Message For The Couple</label>
@@ -752,7 +961,11 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
     const parts = el.getAttribute('data-toggle').split(':');
     const values = parts[1].split(',');
     const value = getFieldValue(parts[0]);
-    const show = value !== null && values.indexOf(value) !== -1;
+    // A nested block only shows when every ancestor block is showing too --
+    // otherwise the inner toggle would re-enable fields inside a hidden parent
+    // and submit them.
+    const parentHidden = el.parentElement && el.parentElement.closest('[data-toggle][hidden]');
+    const show = !parentHidden && value !== null && values.indexOf(value) !== -1;
     el.hidden = !show;
     el.querySelectorAll('input, select, textarea').forEach(function(field){
       field.disabled = !show;
