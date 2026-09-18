@@ -9,7 +9,6 @@ $failed    = ($_GET['submitted'] ?? '') === '0';
 $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
 
 const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
-const AE_LOGO     = AE_IMG_BASE . 'Ayode-Elochukwu.jpeg';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,6 +16,11 @@ const AE_LOGO     = AE_IMG_BASE . 'Ayode-Elochukwu.jpeg';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ayodele &amp; Elochukwu Wedding RSVP</title>
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <meta name="theme-color" content="#0f7a82">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -151,10 +155,11 @@ const AE_LOGO     = AE_IMG_BASE . 'Ayode-Elochukwu.jpeg';
   }
   .ae-hero-inner{position:relative;z-index:2;width:100%;}
   .ae-logo{
-    width:clamp(190px,42vw,300px);
+    width:clamp(170px,38vw,268px);
     height:auto;
-    border-radius:6px;
-    box-shadow:0 14px 44px rgba(0,0,0,0.3);
+    aspect-ratio:1/1;
+    border-radius:50%;
+    box-shadow:0 14px 44px rgba(0,0,0,0.32);
     margin:0 auto clamp(24px,5vw,38px);
     display:block;
   }
@@ -471,7 +476,7 @@ const AE_LOGO     = AE_IMG_BASE . 'Ayode-Elochukwu.jpeg';
   </div>
 
   <div class="ae-hero-inner ae-wrap">
-    <img class="ae-logo" src="<?= AE_LOGO ?>" alt="Ayodele and Elochukwu monogram">
+    <img class="ae-logo" src="assets/logo-circle.png" alt="Ayodele and Elochukwu monogram" width="900" height="900">
     <p class="ae-announce">We&rsquo;re Getting Married</p>
     <h1 class="ae-names">Ayodele &amp; Elochukwu</h1>
     <p class="ae-date">21 &middot; 11 &middot; 2026</p>
