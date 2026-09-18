@@ -16,7 +16,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
   <title>Ebenezer Taiwo Olushina's 60th RSVP</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,700;0,6..96,900;1,6..96,400;1,6..96,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --navy:#0d1b3e;
@@ -68,83 +68,68 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     position:relative;
     z-index:1;
   }
-  .eto-hero-inner{position:relative;z-index:2;}
-  .eto-sixty{
-    font-family:'Playfair Display',serif;
-    font-weight:700;
-    line-height:0.86;
-    letter-spacing:-0.01em;
-    font-size:clamp(5.5rem,22vw,13rem);
-    margin:0;
-    background:linear-gradient(168deg,var(--gold-pale) 0%,var(--gold-light) 30%,var(--gold) 58%,#9d7d38 100%);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
+  .eto-hero-inner{
+    position:relative;
+    z-index:2;
+    text-align:left;
+  }
+
+  .eto-hero-top{
+    display:flex;
+    flex-direction:column;
+    gap:clamp(40px,8vw,64px);
+  }
+
+  /* Left stacked headline, matching the printed Save-the-Date card */
+  .eto-headline{margin:0;flex:1;}
+  .eto-headline .eto-std-svg{
+    display:block;
+    width:100%;
+    max-width:min(560px,92vw);
+    height:auto;
     filter:drop-shadow(0 3px 18px rgba(201,169,97,0.18));
   }
-  .eto-sixty-sub{
-    font-family:'Montserrat',sans-serif;
-    font-size:clamp(0.62rem,2.2vw,0.76rem);
-    letter-spacing:0.42em;
-    text-transform:uppercase;
-    color:var(--gold);
-    margin:6px 0 0;
-    padding-left:0.42em;
+
+  /* Name / occasion / venue block, with the gold vertical rule from the card */
+  .eto-details{
+    padding-left:clamp(20px,4vw,34px);
+    border-left:2px solid rgba(201,169,97,0.55);
+    align-self:flex-end;
   }
-  .eto-rule{
-    width:clamp(70px,14vw,130px);
-    height:1px;
-    background:linear-gradient(90deg,transparent,var(--gold),transparent);
-    margin:clamp(26px,5vw,40px) auto;
+  .eto-details .eto-det-svg{
+    display:block;
+    width:100%;
+    max-width:min(330px,80vw);
+    height:auto;
   }
-  .eto-name{
-    font-family:'Montserrat',sans-serif;
-    font-size:clamp(0.72rem,2.6vw,0.92rem);
-    font-weight:400;
-    letter-spacing:0.3em;
-    text-transform:uppercase;
-    color:rgba(255,255,255,0.82);
-    margin:0 0 clamp(10px,2vw,16px);
-    line-height:1.5;
+
+  /* Desktop: headline and name/occasion sit on the same row */
+  @media (min-width:701px){
+    .eto-hero-top{
+      flex-direction:row;
+      align-items:flex-end;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
   }
-  .eto-occasion{
-    font-family:'Playfair Display',serif;
-    font-style:italic;
-    font-size:clamp(1.05rem,3vw,1.5rem);
-    color:rgba(255,255,255,0.86);
-    margin:0 0 clamp(28px,5vw,42px);
-  }
-  .eto-meta{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    align-items:center;
-    gap:10px clamp(18px,4vw,34px);
-    font-family:'Montserrat',sans-serif;
-    font-size:clamp(0.74rem,2.2vw,0.86rem);
-    letter-spacing:0.16em;
-    text-transform:uppercase;
-    color:rgba(255,255,255,0.9);
-  }
-  .eto-meta span{white-space:nowrap;}
-  /* The details strip below repeats date/time/venue. On narrow screens that
-     reads as the same facts twice, so the hero line is desktop-only. */
-  @media (max-width:768px){
-    .eto-meta{display:none;}
-  }
-  .eto-meta i{
-    display:inline-block;
-    width:4px;height:4px;
-    border-radius:50%;
-    background:var(--gold);
-    vertical-align:middle;
-  }
-  .eto-followup{
-    font-family:'Playfair Display',serif;
-    font-style:italic;
-    font-size:clamp(0.95rem,2.6vw,1.15rem);
-    color:var(--gold-light);
-    margin:clamp(26px,5vw,38px) 0 0;
+
+  @media (max-width:700px){
+    .eto-headline .eto-std-svg{
+      margin:0 auto;
+      max-width:min(400px,78vw);
+    }
+    .eto-details{
+      margin:0 auto;
+      border-left:none;
+      padding-left:0;
+      border-top:2px solid rgba(201,169,97,0.45);
+      padding-top:26px;
+      align-self:stretch;
+    }
+    .eto-details .eto-det-svg{
+      margin:0 auto;
+      max-width:min(300px,74vw);
+    }
   }
 
   /* ---------- COUNTDOWN ---------- */
@@ -164,9 +149,9 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
   }
   .eto-count-num{
     display:block;
-    font-family:'Playfair Display',serif;
+    font-family:'Bodoni Moda','Bodoni MT','Didot','Didot LT STD','Hoefler Text',Garamond,'Times New Roman',serif;
     font-size:clamp(1.5rem,5vw,2.1rem);
-    font-weight:600;
+    font-weight:700;
     color:var(--gold-pale);
     line-height:1;
   }
@@ -187,27 +172,28 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     border-top:1px solid rgba(201,169,97,0.18);
     border-bottom:1px solid rgba(201,169,97,0.18);
   }
-  .eto-strip-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
-    gap:clamp(22px,4vw,40px);
-    text-align:center;
-  }
-  .eto-strip-item h3{
+  .eto-strip .eto-wrap{text-align:center;}
+  .eto-dress-label{
     font-family:'Montserrat',sans-serif;
-    font-size:0.66rem;
-    letter-spacing:0.2em;
+    font-size:0.68rem;
+    letter-spacing:0.32em;
     text-transform:uppercase;
     font-weight:600;
-    color:var(--gold-light);
-    margin:0 0 10px;
+    color:var(--gold);
+    margin:0 0 clamp(12px,2.5vw,18px);
   }
-  .eto-strip-item p{
-    font-family:'Playfair Display',serif;
-    font-size:clamp(1.05rem,2.8vw,1.3rem);
+  .eto-dress-value{
+    font-family:'Bodoni Moda','Bodoni MT','Didot','Didot LT STD','Hoefler Text',Garamond,'Times New Roman',serif;
+    font-variation-settings:'opsz' 72;
+    font-weight:500;
+    font-size:clamp(2rem,7vw,3.6rem);
+    line-height:1.15;
+    letter-spacing:0.01em;
     margin:0;
-    line-height:1.45;
-    color:rgba(255,255,255,0.95);
+    background:linear-gradient(168deg,var(--gold-pale) 0%,var(--gold-light) 40%,var(--gold) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
   }
 
   /* ---------- FORM SECTION ---------- */
@@ -275,9 +261,9 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     margin:0 0 12px;
   }
   .eto-section-title{
-    font-family:'Playfair Display',serif;
+    font-family:'Bodoni Moda','Bodoni MT','Didot','Didot LT STD','Hoefler Text',Garamond,'Times New Roman',serif;
     font-size:clamp(2rem,6vw,3rem);
-    font-weight:600;
+    font-weight:700;
     letter-spacing:0.04em;
     color:var(--gold-pale);
     margin:0;
@@ -292,9 +278,9 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     box-shadow:0 18px 50px rgba(13,27,62,0.10);
   }
   .eto-card-heading{
-    font-family:'Playfair Display',serif;
+    font-family:'Bodoni Moda','Bodoni MT','Didot','Didot LT STD','Hoefler Text',Garamond,'Times New Roman',serif;
     font-size:clamp(1.4rem,4vw,1.85rem);
-    font-weight:600;
+    font-weight:700;
     text-align:center;
     color:var(--navy);
     margin:0 0 6px;
@@ -375,36 +361,13 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
   .eto-radio-group input[type=radio]{accent-color:var(--royal);width:16px;height:16px;}
 
   .eto-note{
-    font-family:'Playfair Display',serif;
+    font-family:'Bodoni Moda','Bodoni MT','Didot','Didot LT STD','Hoefler Text',Garamond,'Times New Roman',serif;
     font-style:italic;
     font-size:1rem;
     color:var(--muted);
     margin:4px 0 0;
     line-height:1.5;
   }
-  .eto-dress{
-    background:linear-gradient(135deg,rgba(30,58,138,0.05),rgba(201,169,97,0.09));
-    border-left:2px solid var(--gold);
-    padding:16px 18px;
-    margin:0 0 22px;
-    border-radius:0 3px 3px 0;
-  }
-  .eto-dress h4{
-    font-size:0.66rem;
-    letter-spacing:0.2em;
-    text-transform:uppercase;
-    color:var(--royal);
-    margin:0 0 6px;
-    font-weight:600;
-  }
-  .eto-dress p{
-    font-family:'Playfair Display',serif;
-    font-size:1.15rem;
-    color:var(--navy);
-    margin:0;
-    letter-spacing:0.04em;
-  }
-
   .eto-submit{
     width:100%;
     padding:15px 20px;
@@ -472,15 +435,15 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     color:var(--white);
   }
   .eto-confirmation h4{
-    font-family:'Playfair Display',serif;
+    font-family:'Bodoni Moda','Bodoni MT','Didot','Didot LT STD','Hoefler Text',Garamond,'Times New Roman',serif;
     font-size:clamp(1.6rem,5vw,2.2rem);
-    font-weight:600;
+    font-weight:700;
     color:var(--gold-pale);
     margin:0 0 14px;
     letter-spacing:0.04em;
   }
   .eto-confirmation p{
-    font-family:'Playfair Display',serif;
+    font-family:'Bodoni Moda','Bodoni MT','Didot','Didot LT STD','Hoefler Text',Garamond,'Times New Roman',serif;
     font-size:clamp(1.05rem,3vw,1.25rem);
     line-height:1.6;
     margin:0;
@@ -547,17 +510,14 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
 
 <header class="eto-hero">
   <div class="eto-hero-inner eto-wrap">
-    <p class="eto-name">Ebenezer Taiwo Olushina</p>
-    <h1 class="eto-sixty">60</h1>
-    <p class="eto-sixty-sub">Years</p>
-    <div class="eto-rule"></div>
-    <p class="eto-occasion">Birthday Celebration</p>
-    <div class="eto-meta">
-      <span>Wednesday 14th October, 2026</span>
-      <i></i>
-      <span>3:00 PM</span>
-      <i></i>
-      <span>Lagos, Nigeria</span>
+    <div class="eto-hero-top">
+      <div class="eto-headline">
+        <?= file_get_contents(__DIR__ . '/assets/save-the-date.svg') ?>
+      </div>
+
+      <div class="eto-details">
+        <?= file_get_contents(__DIR__ . '/assets/event-details.svg') ?>
+      </div>
     </div>
 
     <div class="eto-countdown" id="eto-countdown">
@@ -566,29 +526,13 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
       <div class="eto-count-box"><span class="eto-count-num" id="eto-minutes">00</span><span class="eto-count-lbl">Minutes</span></div>
       <div class="eto-count-box"><span class="eto-count-num" id="eto-seconds">00</span><span class="eto-count-lbl">Seconds</span></div>
     </div>
-
-    <p class="eto-followup">Kindly respond below. Formal invitation to follow.</p>
   </div>
 </header>
 
 <section class="eto-strip">
-  <div class="eto-wrap eto-strip-grid">
-    <div class="eto-strip-item">
-      <h3>Date</h3>
-      <p>Wednesday<br>14th October, 2026</p>
-    </div>
-    <div class="eto-strip-item">
-      <h3>Time</h3>
-      <p>3:00 PM<br>Prompt</p>
-    </div>
-    <div class="eto-strip-item">
-      <h3>Venue</h3>
-      <p>Lagos, Nigeria<br>Details to follow</p>
-    </div>
-    <div class="eto-strip-item">
-      <h3>Dress Code</h3>
-      <p>Elegant</p>
-    </div>
+  <div class="eto-wrap">
+    <h3 class="eto-dress-label">Dress Code</h3>
+    <p class="eto-dress-value">Elegant &amp; Glamorous</p>
   </div>
 </section>
 
@@ -607,11 +551,6 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     <div <?= $submitted ? 'hidden' : '' ?> id="eto-form-shell">
       <h3 class="eto-card-heading">Confirm Your Attendance</h3>
       <span class="eto-card-sub">Ebenezer Taiwo Olushina &bull; 60th Birthday</span>
-
-      <div class="eto-dress">
-        <h4>Dress Code</h4>
-        <p>Elegant</p>
-      </div>
 
       <p class="eto-form-message <?= $failed ? 'eto-form-message--error' : '' ?>" id="eto-form-message"><?= $failed ? 'Something went wrong. Please check your details and try again.' : '' ?></p>
 
@@ -681,7 +620,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
   function updateCountdown(){
     const diff = eventDate - new Date().getTime();
     if (diff <= 0){
-      countdownEl.innerHTML = '<span style="font-family:\'Playfair Display\',serif;font-size:1.5rem;color:#f0e4c4;">Celebrating Today!</span>';
+      countdownEl.innerHTML = '<span style="font-family:\'Bodoni Moda\',Didot,serif;font-size:1.5rem;color:#f0e4c4;">Celebrating Today!</span>';
       return;
     }
     const d = Math.floor(diff / 86400000);

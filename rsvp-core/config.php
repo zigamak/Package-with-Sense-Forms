@@ -69,7 +69,7 @@ define('SYNC_API_KEY', pws_env('SYNC_API_KEY', 'CHANGE_ME_32_CHAR_RANDOM_STRING'
 
 // Known form_slug values, shared by submit.php, note-submit.php, and
 // get-notes.php. Add a new slug here when a new form page is created.
-const PWS_ALLOWED_FORMS = ['trad-white', 'white-only', 'eto-60'];
+const PWS_ALLOWED_FORMS = ['trad-white', 'white-only', 'eto-60', 'ayodele-elochukwu'];
 
 // Error logging: PHP's own errors/warnings/fatals go to logs/php-error.log
 // (log_errors, not display_errors — never show raw errors to guests filling
