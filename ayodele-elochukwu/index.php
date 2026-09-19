@@ -23,7 +23,7 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
   <meta name="theme-color" content="#0f7a82">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --teal:#0f7a82;
@@ -62,7 +62,10 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
     backdrop-filter:blur(8px);
   }
   .ae-nav-brand{
-    font-family:'Great Vibes',cursive;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Cormorant Garamond',serif;
     font-size:clamp(1.15rem,3vw,1.6rem);
     color:var(--gold-pale);
     text-decoration:none;
@@ -108,7 +111,7 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
     padding-bottom:16px;margin-bottom:22px;
   }
   .ae-drawer-title{
-    font-family:'Great Vibes',cursive;
+    font-family:'Cormorant Garamond',serif;
     font-size:1.5rem;color:var(--gold-pale);margin:0;
   }
   .ae-drawer-cancel{
@@ -143,7 +146,9 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
   .ae-slide{
     position:absolute;inset:0;
     background-size:cover;
-    background-position:center;
+    /* Portrait photos on a landscape hero: favour the upper third so faces
+       stay in frame instead of being cropped out at the centre. */
+    background-position:center 22%;
     opacity:0;
     transition:opacity 1.6s ease-in-out;
   }
@@ -154,24 +159,24 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
     background:linear-gradient(180deg,rgba(7,61,66,0.72) 0%,rgba(7,61,66,0.55) 45%,rgba(7,61,66,0.85) 100%);
   }
   .ae-hero-inner{position:relative;z-index:2;width:100%;}
-  .ae-logo{
-    width:clamp(170px,38vw,268px);
+  .ae-nav-logo{
+    width:clamp(30px,7vw,40px);
     height:auto;
     aspect-ratio:1/1;
     border-radius:50%;
-    box-shadow:0 14px 44px rgba(0,0,0,0.32);
-    margin:0 auto clamp(24px,5vw,38px);
     display:block;
+    flex:none;
+    background:var(--ivory);
   }
   .ae-announce{
-    font-family:'Great Vibes',cursive;
+    font-family:'Cormorant Garamond',serif;
     font-size:clamp(1.5rem,4.2vw,2.6rem);
     color:var(--gold-light);
     margin:0 0 10px;
     text-shadow:0 2px 14px rgba(0,0,0,0.45);
   }
   .ae-names{
-    font-family:'Great Vibes',cursive;
+    font-family:'Cormorant Garamond',serif;
     font-size:clamp(2.6rem,9vw,5.4rem);
     color:var(--white);
     margin:0 0 14px;
@@ -236,7 +241,7 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
   }
   .ae-section--teal .ae-eyebrow{color:var(--gold-light);}
   .ae-title{
-    font-family:'Great Vibes',cursive;
+    font-family:'Cormorant Garamond',serif;
     font-size:clamp(2.1rem,6.5vw,3.4rem);
     color:var(--teal-deep);
     margin:0;font-weight:400;line-height:1.15;
@@ -323,7 +328,7 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
     font-size:clamp(1.05rem,2.8vw,1.25rem);color:var(--ink);
   }
   .ae-story-quote{
-    font-family:'Great Vibes',cursive;
+    font-family:'Cormorant Garamond',serif;
     font-size:clamp(1.6rem,4.6vw,2.4rem);
     color:var(--gold);line-height:1.35;
     padding:8px 0;
@@ -344,72 +349,50 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
     letter-spacing:0.04em;
   }
 
-  /* ---------- ASO EBI ---------- */
-  .ae-asoebi-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:clamp(18px,3vw,28px);margin-bottom:clamp(24px,4vw,36px);
+  /* ---------- INVITATION NOTICE ---------- */
+  .ae-notice{
+    background:linear-gradient(150deg,var(--teal-dark) 0%,var(--teal-deep) 55%,var(--teal) 100%);
+    color:var(--white);
+    text-align:center;
+    padding:clamp(46px,8vw,80px) 20px;
+    border-top:1px solid rgba(242,227,192,0.25);
+    border-bottom:1px solid rgba(242,227,192,0.25);
   }
-  .ae-asoebi-card{
-    background:var(--white);border:1px solid var(--line);border-radius:8px;
-    padding:clamp(22px,4vw,30px);
-    box-shadow:0 10px 34px rgba(15,122,130,0.07);
+  .ae-notice-kicker{
+    font-family:'Montserrat',sans-serif;
+    font-size:clamp(0.6rem,2vw,0.72rem);
+    letter-spacing:0.34em;
+    text-transform:uppercase;
+    font-weight:600;
+    color:var(--gold-light);
+    margin:0 0 clamp(12px,2.5vw,18px);
   }
-  .ae-asoebi-card h3{
-    font-family:'Playfair Display',serif;
-    font-size:clamp(1.1rem,3vw,1.35rem);
-    color:var(--teal-deep);margin:0 0 16px;font-weight:600;text-align:center;
+  .ae-notice-main{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(2.2rem,8vw,4.4rem);
+    font-weight:600;
+    line-height:1.08;
+    letter-spacing:0.01em;
+    margin:0;
+    background:linear-gradient(168deg,var(--gold-pale) 0%,var(--gold-light) 45%,var(--gold) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
   }
-  .ae-price-list{list-style:none;margin:0;padding:0;}
-  .ae-price-list li{
-    display:flex;justify-content:space-between;align-items:baseline;gap:14px;
-    padding:11px 0;border-bottom:1px dashed rgba(200,149,43,0.28);
-    font-size:0.9rem;color:var(--muted);font-weight:300;
+  .ae-notice-rule{
+    width:clamp(70px,16vw,140px);
+    height:1px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    margin:clamp(26px,5vw,40px) auto;
   }
-  .ae-price-list li:last-child{border-bottom:none;}
-  .ae-price{
-    font-family:'Playfair Display',serif;
-    font-size:1.02rem;color:var(--teal-deep);font-weight:600;white-space:nowrap;
+  .ae-notice-date{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(1.9rem,6.5vw,3.4rem);
+    font-weight:600;
+    line-height:1.12;
+    margin:0;
+    color:var(--white);
   }
-  .ae-payment{
-    max-width:520px;margin:0 auto;
-    background:linear-gradient(150deg,var(--teal-dark) 0%,var(--teal-deep) 100%);
-    border-radius:8px;padding:clamp(24px,4vw,32px);text-align:center;
-    box-shadow:0 14px 40px rgba(10,86,92,0.2);
-  }
-  .ae-payment h3{
-    font-family:'Great Vibes',cursive;font-weight:400;
-    font-size:clamp(1.5rem,4vw,2rem);color:var(--gold-pale);margin:0 0 18px;
-  }
-  .ae-payment-rows{margin:0 0 18px;}
-  .ae-payment-rows div{
-    display:flex;justify-content:space-between;align-items:baseline;gap:14px;
-    padding:10px 0;border-bottom:1px solid rgba(242,227,192,0.18);
-  }
-  .ae-payment-rows div:last-child{border-bottom:none;}
-  .ae-payment-rows dt{
-    font-size:0.63rem;letter-spacing:0.18em;text-transform:uppercase;
-    color:rgba(242,227,192,0.75);margin:0;
-  }
-  .ae-payment-rows dd{
-    margin:0;font-size:0.95rem;color:var(--white);font-weight:500;
-    text-align:right;overflow-wrap:anywhere;
-  }
-  .ae-payment-note{
-    font-size:0.84rem;line-height:1.7;color:rgba(247,244,238,0.86);margin:0 0 10px;
-  }
-  .ae-payment-note a{color:var(--gold-light);text-decoration:none;font-weight:500;white-space:nowrap;}
-  .ae-payment-note a:hover{text-decoration:underline;}
-  .ae-payment-warn{
-    font-size:0.76rem;line-height:1.6;margin:0;
-    color:var(--gold-light);font-style:italic;
-    border-top:1px solid rgba(242,227,192,0.2);padding-top:12px;
-  }
-
-  .ae-form-note{
-    font-size:0.8rem;line-height:1.65;color:var(--muted);
-    margin:0 0 14px;font-style:italic;
-  }
-  .ae-form-note a{color:var(--teal);font-weight:500;white-space:nowrap;}
 
   /* ---------- FORM ---------- */
   .ae-card{
@@ -503,7 +486,7 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
     border-radius:8px;color:var(--white);
   }
   .ae-confirmation h4{
-    font-family:'Great Vibes',cursive;
+    font-family:'Cormorant Garamond',serif;
     font-size:clamp(1.8rem,5.5vw,2.5rem);
     color:var(--gold-pale);margin:0 0 14px;font-weight:400;
   }
@@ -521,7 +504,7 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
     padding:clamp(32px,5vw,48px) 20px;
   }
   .ae-footer-names{
-    font-family:'Great Vibes',cursive;
+    font-family:'Cormorant Garamond',serif;
     font-size:clamp(1.6rem,4.5vw,2.2rem);
     color:var(--gold-pale);margin:0 0 8px;
   }
@@ -551,7 +534,10 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
 <body>
 
 <nav class="ae-nav">
-  <a href="#top" class="ae-nav-brand">Ayodele &amp; Elochukwu</a>
+  <a href="#top" class="ae-nav-brand">
+    <img class="ae-nav-logo" src="assets/logo-circle.png" alt="" width="900" height="900">
+    <span>Ayodele &amp; Elochukwu</span>
+  </a>
   <button type="button" class="ae-menu-toggle" id="ae-toggle" aria-label="Open menu">Menu</button>
 </nav>
 
@@ -566,7 +552,6 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
   <a href="#events">Events</a>
   <a href="#gallery">Gallery</a>
   <a href="#dresscode">Dress Code</a>
-  <a href="#asoebi">Aso Ebi</a>
   <a href="#rsvp">RSVP</a>
 </aside>
 
@@ -580,7 +565,6 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
   </div>
 
   <div class="ae-hero-inner ae-wrap">
-    <img class="ae-logo" src="assets/logo-circle.png" alt="Ayodele and Elochukwu monogram" width="900" height="900">
     <p class="ae-announce">We&rsquo;re Getting Married</p>
     <h1 class="ae-names">Ayodele &amp; Elochukwu</h1>
     <p class="ae-date">21 &middot; 11 &middot; 2026</p>
@@ -692,51 +676,13 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
   </div>
 </section>
 
-<section class="ae-section" id="asoebi">
+<section class="ae-notice">
   <div class="ae-wrap">
-    <div class="ae-section-head">
-      <p class="ae-eyebrow">Aso Ebi</p>
-      <h2 class="ae-title">Fabric &amp; Pricing</h2>
-      <p class="ae-lead">
-        Aso Ebi is available for purchase. Please call to confirm fabric is still
-        available <strong>before</strong> making any payment.
-      </p>
-    </div>
-
-    <div class="ae-asoebi-grid">
-      <div class="ae-asoebi-card">
-        <h3>Ladies</h3>
-        <ul class="ae-price-list">
-          <li><span>Gele</span><span class="ae-price">&#8358;20,000</span></li>
-        </ul>
-      </div>
-
-      <div class="ae-asoebi-card">
-        <h3>Gentlemen</h3>
-        <ul class="ae-price-list">
-          <li><span>10 yards with fila</span><span class="ae-price">&#8358;150,000</span></li>
-          <li><span>5 yards with fila</span><span class="ae-price">&#8358;80,000</span></li>
-          <li><span>Fila only</span><span class="ae-price">&#8358;10,000</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="ae-payment">
-      <h3>Payment Details</h3>
-      <dl class="ae-payment-rows">
-        <div><dt>Account Name</dt><dd>Okeoghene A. Ekere</dd></div>
-        <div><dt>Bank</dt><dd>Stanbic IBTC</dd></div>
-        <div><dt>Account Number</dt><dd>0023138734</dd></div>
-      </dl>
-      <p class="ae-payment-note">
-        Kindly forward proof of payment to
-        <a href="tel:07035161687">070 3516 1687</a> &amp;
-        <a href="tel:08142025400">081 4202 5400</a>
-      </p>
-      <p class="ae-payment-warn">
-        Please confirm availability on the numbers above before paying.
-      </p>
-    </div>
+    <p class="ae-notice-kicker">Please Note</p>
+    <p class="ae-notice-main">Strictly By Invitation</p>
+    <div class="ae-notice-rule"></div>
+    <p class="ae-notice-kicker">Kindly Respond By</p>
+    <p class="ae-notice-date">4th November 2026</p>
   </div>
 </section>
 
@@ -810,48 +756,6 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
           <input type="text" id="guest_names" name="guest_names" placeholder="Full name(s) of your guest(s)">
         </div>
 
-        <div class="ae-field">
-          <label for="rsvp_category">Whose Guest Are You?</label>
-          <select id="rsvp_category" name="rsvp_category">
-            <option value="">-</option>
-            <option value="Bride's Family">Bride&rsquo;s Family</option>
-            <option value="Groom's Family">Groom&rsquo;s Family</option>
-            <option value="Bride's Friend">Bride&rsquo;s Friend</option>
-            <option value="Groom's Friend">Groom&rsquo;s Friend</option>
-            <option value="Colleague">Colleague</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-
-        <fieldset class="ae-fieldset" hidden data-toggle="attending:yes">
-          <legend>Would you like to purchase Aso Ebi?</legend>
-          <div class="ae-radio-group">
-            <label><input type="radio" name="asoebi_purchase" value="yes"> Yes</label>
-            <label><input type="radio" name="asoebi_purchase" value="no"> No</label>
-          </div>
-
-          <div class="ae-field" hidden data-toggle="asoebi_purchase:yes">
-            <label for="asoebi_item">Item</label>
-            <select id="asoebi_item" name="asoebi_item">
-              <option value="">-</option>
-              <option value="Gele - N20,000">Ladies &mdash; Gele (&#8358;20,000)</option>
-              <option value="10 yards with fila - N150,000">Gentlemen &mdash; 10 yards with fila (&#8358;150,000)</option>
-              <option value="5 yards with fila - N80,000">Gentlemen &mdash; 5 yards with fila (&#8358;80,000)</option>
-              <option value="Fila only - N10,000">Gentlemen &mdash; Fila only (&#8358;10,000)</option>
-            </select>
-          </div>
-
-          <div class="ae-field" hidden data-toggle="asoebi_purchase:yes">
-            <label for="asoebi_qty">Quantity</label>
-            <input type="number" id="asoebi_qty" name="asoebi_qty" min="1" value="1">
-          </div>
-
-          <p class="ae-form-note" hidden data-toggle="asoebi_purchase:yes">
-            Please call <a href="tel:07035161687">070 3516 1687</a> to confirm fabric is
-            still available before you pay. Payment details are in the Aso Ebi section above.
-          </p>
-        </fieldset>
-
         <div class="ae-field" hidden data-toggle="attending:no">
           <label for="message">Leave A Message For The Couple</label>
           <textarea id="message" name="message" placeholder="Your good wishes for Ayodele &amp; Elochukwu..."></textarea>
@@ -918,7 +822,7 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
   function updateCountdown(){
     const diff = weddingDate - Date.now();
     if (diff <= 0){
-      countdownEl.innerHTML = '<span style="font-family:\'Great Vibes\',cursive;font-size:2rem;color:#f2e3c0;">Happily Married!</span>';
+      countdownEl.innerHTML = '<span style="font-family:\'Cormorant Garamond\',serif;font-weight:600;font-size:2.2rem;color:#f2e3c0;">Happily Married!</span>';
       return;
     }
     daysEl.textContent    = String(Math.floor(diff / 86400000)).padStart(2,'0');
