@@ -593,7 +593,7 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
       <p>
         What began as a simple meeting grew into laughter, friendship, love, and a
         beautiful life together. Looking back, we now know that the greatest gift of that
-        Christmas wasn&rsquo;t under the tree &mdash; it was finding each other.
+        Christmas wasn&rsquo;t under the tree. It was finding each other.
       </p>
       <p class="ae-story-quote">My Christmas Present &rsquo;22, now, my forever.</p>
       <p>
@@ -627,7 +627,7 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
         <p><strong>Immediately after</strong></p>
         <p>the traditional ceremony</p>
         <p class="ae-event-note">
-          Same venue &mdash; stay with us and celebrate into the night.
+          Same venue. Stay with us and celebrate into the night.
         </p>
       </div>
     </div>
