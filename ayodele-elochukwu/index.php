@@ -479,6 +479,10 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
     display:block;margin-top:6px;font-size:0.76rem;color:#b3452f;
     letter-spacing:0;text-transform:none;font-weight:400;
   }
+  .ae-field.has-error input,.ae-field.has-error select,.ae-field.has-error textarea,
+  .ae-fieldset.has-error{border-color:#b3452f;}
+  /* Keep the fixed nav from covering a field scrolled to on error. */
+  .ae-field,.ae-fieldset{scroll-margin-top:110px;}
   .ae-confirmation{
     text-align:center;
     padding:clamp(26px,5vw,42px) clamp(18px,4vw,30px);
@@ -733,15 +737,7 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
           <input type="email" id="email" name="email">
         </div>
 
-        <fieldset class="ae-fieldset">
-          <legend>Will you be attending? <span class="ae-required">*</span></legend>
-          <div class="ae-radio-group">
-            <label><input type="radio" name="attending" value="yes" required> Yes</label>
-            <label><input type="radio" name="attending" value="no"> No</label>
-          </div>
-        </fieldset>
-
-        <div class="ae-field" hidden data-toggle="attending:yes">
+        <div class="ae-field">
           <label for="guest_count">Number Attending</label>
           <select id="guest_count" name="guest_count">
             <option value="">-</option>
@@ -756,7 +752,7 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
           <input type="text" id="guest_names" name="guest_names" placeholder="Full name(s) of your guest(s)">
         </div>
 
-        <div class="ae-field" hidden data-toggle="attending:no">
+        <div class="ae-field">
           <label for="message">Leave A Message For The Couple</label>
           <textarea id="message" name="message" placeholder="Your good wishes for Ayodele &amp; Elochukwu..."></textarea>
         </div>
@@ -886,11 +882,75 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
     applyToggle(el);
   });
 
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
+  function clearErrors(){
     form.querySelectorAll('.ae-error-text').forEach(function(el){ el.remove(); });
+    form.querySelectorAll('.has-error').forEach(function(el){ el.classList.remove('has-error'); });
     messageEl.className = 'ae-form-message';
     messageEl.textContent = '';
+  }
+
+  // Marks each field in `errors` ({name: message}) and scrolls to the first
+  // one. Errors with no visible field (e.g. form_slug, "_") are shown in the
+  // message line instead, so the guest always sees the real reason.
+  function showErrors(errors){
+    let first = null;
+    const general = [];
+    Object.keys(errors).forEach(function(name){
+      const input = form.querySelector('[name="' + name + '"]');
+      const wrap = input && input.type !== 'hidden' && input.closest('.ae-field, .ae-fieldset');
+      if (!wrap || wrap.closest('[hidden]')){
+        general.push(errors[name]);
+        return;
+      }
+      wrap.classList.add('has-error');
+      const text = document.createElement('span');
+      text.className = 'ae-error-text';
+      text.textContent = errors[name];
+      wrap.appendChild(text);
+      if (!first) first = wrap;
+    });
+
+    messageEl.className = 'ae-form-message ae-form-message--error';
+    messageEl.textContent = general.length
+      ? general.join(' ')
+      : 'Please fix the highlighted fields and try again.';
+
+    const target = first || messageEl;
+    target.scrollIntoView({ behavior:'smooth', block:'start' });
+    if (first){
+      const focusable = first.querySelector('input:not([type=hidden]), select, textarea');
+      if (focusable) focusable.focus({ preventScroll:true });
+    }
+  }
+
+  // Same rules as submit.php, checked before
+  // sending so the guest is taken straight to the missing field.
+  function validate(){
+    const errors = {};
+    if (!form.full_name.value.trim()) errors.full_name = 'Please enter your full name.';
+    if (!form.phone.value.trim()) errors.phone = 'Please enter your phone number.';
+    const email = form.email.value.trim();
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'Please enter a valid email address.';
+    return errors;
+  }
+
+  form.querySelectorAll('input, select, textarea').forEach(function(field){
+    field.addEventListener(field.type === 'radio' ? 'change' : 'input', function(){
+      const wrap = field.closest('.has-error');
+      if (!wrap) return;
+      wrap.classList.remove('has-error');
+      wrap.querySelectorAll('.ae-error-text').forEach(function(el){ el.remove(); });
+    });
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    clearErrors();
+    const clientErrors = validate();
+    if (Object.keys(clientErrors).length){
+      showErrors(clientErrors);
+      return;
+    }
     const submitBtn = form.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
     submitBtn.classList.add('is-loading');
@@ -908,25 +968,12 @@ const AE_IMG_BASE = 'https://packagewithsense.com/wp-content/uploads/2026/09/';
           setFabHidden(true);
           confirmationEl.scrollIntoView({ behavior:'smooth', block:'center' });
         } else {
-          messageEl.className = 'ae-form-message ae-form-message--error';
-          messageEl.textContent = 'Please fix the highlighted fields and try again.';
           const errors = (data && data.errors) || {};
-          Object.keys(errors).forEach(function(field){
-            const input = form.querySelector('[name="' + field + '"]');
-            const text = document.createElement('span');
-            text.className = 'ae-error-text';
-            text.textContent = errors[field];
-            if (input && input.closest('.ae-field')){
-              input.closest('.ae-field').appendChild(text);
-            } else if (input && input.closest('.ae-fieldset')){
-              input.closest('.ae-fieldset').appendChild(text);
-            }
-          });
+          showErrors(Object.keys(errors).length ? errors : { _: 'Something went wrong. Please try again.' });
         }
       })
       .catch(function(){
-        messageEl.className = 'ae-form-message ae-form-message--error';
-        messageEl.textContent = 'Something went wrong. Please try again.';
+        showErrors({ _: 'Something went wrong. Please try again.' });
       })
       .finally(function(){
         submitBtn.disabled = false;

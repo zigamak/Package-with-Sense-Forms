@@ -28,6 +28,15 @@ packagewithsense_forms/            (WordPress root in production)
     index.php                      full landing page + Traditional+White RSVP + notes wall
   warami-sinmi/
     index.php                      full landing page + White-only RSVP + notes wall
+  eto-60/
+    index.php                      60th birthday RSVP page
+    eto-60.gs                      Apps Script -> "eto-60" tab
+  ayodele-elochukwu/
+    index.php                      wedding RSVP page
+    ayodele-elochukwu.gs           Apps Script -> "ayodele-elochukwu" tab
+  casmiar-nwaigwe/
+    index.php                      birthday celebration RSVP page
+    casmiar-nwaigwe.gs             Apps Script -> "casmiar-nwaigwe" tab
 ```
 
 Each form page is a **self-contained landing page** (hero slider, countdown, wedding
@@ -46,20 +55,29 @@ That constant drives the guestbook query and the notes form's hidden input. Slug
 listed in `PWS_ALLOWED_FORMS` (`rsvp-core/config.php`), currently:
 
 ```php
-const PWS_ALLOWED_FORMS = ['trad-white', 'white-only'];
+const PWS_ALLOWED_FORMS = ['trad-white', 'white-only', 'eto-60', 'ayodele-elochukwu', 'casmiar-nwaigwe'];
 ```
 
 | Page | `PWS_FORM_SLUG` | Sheet tab |
 |---|---|---|
 | `sinmi-warami-trad-white/` | `trad-white` | `sinmi-warami-trad-white` |
 | `warami-sinmi/` | `white-only` | `sinmi-warami` (unfiltered — see below) |
-| `eto-60/` | `eto-60` | *(no Apps Script yet)* |
+| `eto-60/` | `eto-60` | `eto-60` (`eto-60/eto-60.gs`) |
+| `ayodele-elochukwu/` | `ayodele-elochukwu` | `ayodele-elochukwu` (`ayodele-elochukwu/ayodele-elochukwu.gs`) |
+| `casmiar-nwaigwe/` | `casmiar-nwaigwe` | `casmiar-nwaigwe` (`casmiar-nwaigwe/casmiar-nwaigwe.gs`) |
 
-`eto-60/` is a standalone RSVP page for a 60th birthday — navy/royal/gold, three fields
-(Title, Name, Phone), no guestbook and no uploads. `title` is not one of
-`PWS_TOP_LEVEL_FIELDS`, so it lands in the `payload` JSON like any other form-specific
-field. Until an Apps Script exists for the `eto-60` slug, its RSVPs are stored in
-`rsvp_submissions` but do not reach any Google Sheet.
+`eto-60/` is a standalone RSVP page for a 60th birthday — navy/royal/gold, four fields
+(Title, Name, Phone, Attending), no guestbook and no uploads. `title` and `attending` are
+not in `PWS_TOP_LEVEL_FIELDS`, so they land in the `payload` JSON like any other
+form-specific field.
+
+`ayodele-elochukwu/` (Title, Full Name, Phone, Email, Number Attending, Guest Name(s),
+Message) and `casmiar-nwaigwe/` (the same plus Attending and a hotel room reservation)
+follow the same pattern.
+
+Each of these three pages has its own Apps Script next to its `index.php` (see
+"Per-form Apps Script"). The two Sinmi & Warami pages predate that convention and use the
+scripts in `rsvp-core/`.
 
 ## Why real folders, not `/forms/`
 
@@ -189,6 +207,12 @@ verifies the signature and runs `git fetch` + `git reset --hard origin/main`.
 | Checkout path | `/home/adeisfjg/packagewithsense.com/forms` |
 | Live URL | `https://packagewithsense.com/forms/` |
 | Branch | `main` |
+
+**Shell access is disabled on this cPanel account** — SSH logs in but refuses to run
+commands. Manage the server through cPanel (File Manager, Git Version Control) instead.
+The clone at `~/repos/pws-forms` was created via Git Version Control on 2026-10-25;
+before that it didn't exist, so every webhook pull failed and pages were uploaded by hand.
+Backups of the live folder go in `~/backups/` (outside the web root).
 
 ### How it works: clone outside, sync in
 
@@ -324,11 +348,49 @@ No schema or backend changes needed:
 5. Add that slug to `PWS_ALLOWED_FORMS` in `rsvp-core/config.php` — shared by
    `submit.php`, `note-submit.php`, and `get-notes.php`.
 6. Whatever extra fields you add beyond the standard columns automatically land in the
-   `payload` JSON column and flow through to the Google Sheet.
-7. Want a guestbook on the new page too? Copy the `sw2-notes-*` markup/CSS/JS block from
+   `payload` JSON column.
+7. **Create the form's Google Apps Script** — every form page ships with one, at
+   `<folder>/<folder>.gs` (see "Per-form Apps Script" below). Without it the RSVPs are
+   stored in the database but never reach a Google Sheet.
+8. Want a guestbook on the new page too? Copy the `sw2-notes-*` markup/CSS/JS block from
    an existing page — it POSTs to `note-submit.php` and reads back via a server-side query
    against `guest_notes` scoped to your new `form_slug`. No backend changes needed there
    either.
+
+## Per-form Apps Script
+
+Every form page gets its own Apps Script next to its `index.php`, named after the folder:
+
+```
+some-new-event/
+  index.php
+  some-new-event.gs
+```
+
+Copy `ayodele-elochukwu/ayodele-elochukwu.gs` as the template. Everything stays the same
+(paging through `get-new.php`, the 1-minute self-installed trigger, `syncRsvps` /
+`syncAllRsvps`, value cleaning, formula-injection guard) except:
+
+1. **`SHEET_NAME` and `FORM_SLUG`** — set both to the new page's `PWS_FORM_SLUG`.
+2. **`COLUMNS`** — one entry per field in the form's `<form>`, in on-page order, plus
+   `created_at` first. `source: 'row'` for the top-level fields (`full_name`, `email`,
+   `phone`, `rsvp_category`, `guest_count` — see `PWS_TOP_LEVEL_FIELDS` in `submit.php`),
+   `source: 'payload'` for everything else. File inputs arrive as `<field_name>_url` in the
+   payload. `label` is the field's label as shown on the page.
+3. **`VALUE_LABELS`** — map raw `<option>`/radio `value`s (e.g. `plus_one`) to the text the
+   guest saw (`Me plus one`).
+4. **Header comment** — update the event name and the field list.
+
+`SYNC_API_KEY` stays the placeholder `PASTE_SYNC_API_KEY_HERE` in the repo (it's public,
+and the key exposes every guest's contact details); paste the real key from
+`rsvp-core/.env` only in the Apps Script editor. The sheet tab named after
+the slug is created automatically on the first sync. Paste the script into the Sheet's
+Apps Script editor, run `syncAllRsvps` once, then `syncRsvps` once to install the trigger.
+
+**The new slug must also be added to `PWS_ALLOWED_FORMS` in `rsvp-core/config.php`, and
+that file deployed.** Uploading only the new form folder is not enough: `submit.php`
+rejects any slug not in that list, so RSVPs never reach the database (and so never reach
+the Sheet).
 
 ## Guestbook / SWeetLove notes
 

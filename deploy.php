@@ -93,11 +93,14 @@ if (!is_dir(REPO_PATH . '/.git')) {
     exit;
 }
 
-// 1. Update the checkout that lives outside the web root.
-$pull = 'cd ' . escapeshellarg(REPO_PATH)
+// 1. Update the checkout that lives outside the web root. The whole chain
+// runs in a subshell so stderr from EVERY step (not just the last) lands in
+// the log, and HOME is set because git needs it and PHP's exec() often has none.
+$pull = '(export HOME=' . escapeshellarg(dirname(REPO_PATH, 2))
+      . ' && cd ' . escapeshellarg(REPO_PATH)
       . ' && git fetch --quiet origin ' . escapeshellarg(DEPLOY_BRANCH)
       . ' && git reset --hard ' . escapeshellarg('origin/' . DEPLOY_BRANCH)
-      . ' 2>&1';
+      . ') 2>&1';
 
 exec($pull, $pullOut, $pullStatus);
 $pullLog = implode("\n", $pullOut);
