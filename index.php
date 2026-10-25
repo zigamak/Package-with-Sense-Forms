@@ -286,7 +286,10 @@ try {
           <div class="pws-item-main">
             <h2><?= htmlspecialchars($form['title'], ENT_QUOTES) ?></h2>
             <div class="pws-meta">
-              <span class="pws-slug"><?= htmlspecialchars($form['slug'], ENT_QUOTES) ?></span>
+              <span class="pws-slug">/<?= htmlspecialchars($form['dir'], ENT_QUOTES) ?>/</span>
+              <?php if ($form['slug'] !== $form['dir']): ?>
+                <span class="pws-slug" title="form_slug">slug: <?= htmlspecialchars($form['slug'], ENT_QUOTES) ?></span>
+              <?php endif; ?>
               <?php if ($counts !== null): ?>
                 <span class="pws-badge"><?= $counts[$form['slug']] ?? 0 ?> RSVP<?= ($counts[$form['slug']] ?? 0) === 1 ? '' : 's' ?></span>
               <?php endif; ?>

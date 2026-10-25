@@ -42,7 +42,7 @@ function pws_note_page_url(int $page): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Warami & Sinmi – Wedding</title>
+  <title>Warami & Sinmi – White Wedding RSVP</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600&family=Montserrat:wght@300;500;700&display=swap');
 
@@ -768,7 +768,6 @@ function pws_note_page_url(int $page): string {
               <div class="sw2-checkbox-group">
                 <label><input type="checkbox" name="trad_asoebi_item[]" value="damask_3yd"> Damask fabric - 3 yards (&#8358;45,000)</label>
                 <label><input type="checkbox" name="trad_asoebi_item[]" value="damask_4yd"> Damask fabric - 4 yards (&#8358;60,000)</label>
-                <label><input type="checkbox" name="trad_asoebi_item[]" value="senator"> Senator - 4 yards (&#8358;40,000)</label>
                 <label><input type="checkbox" name="trad_asoebi_item[]" value="damask_gele_18k"> Damask Gele (&#8358;18,000)</label>
                 <label><input type="checkbox" name="trad_asoebi_item[]" value="damask_fila_9k"> Damask Fila (&#8358;9,000)</label>
               </div>
