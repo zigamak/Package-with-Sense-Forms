@@ -120,7 +120,9 @@ foreach (DEPLOY_EXCLUDES as $exclude) {
     $excludeArgs .= ' --exclude=' . escapeshellarg($exclude);
 }
 
-$sync = 'rsync -a' . $excludeArgs . ' '
+// --chmod forces web-readable permissions: plain -a copied the checkout
+// root's 0700 onto the live folder and took the whole site down with a 403.
+$sync = 'rsync -a --chmod=D755,F644' . $excludeArgs . ' '
       . escapeshellarg(rtrim(REPO_PATH, '/') . '/') . ' '
       . escapeshellarg(rtrim(LIVE_PATH, '/') . '/')
       . ' 2>&1';
