@@ -28,7 +28,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
   <meta name="theme-color" content="#b4532a">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --terracotta:#b4532a;
@@ -43,15 +43,43 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     --ink:#3b2a22;
     --muted:#7a6a60;
     --line:rgba(184,146,63,0.32);
+    --paper:#f4ecdd;
+    --band:clamp(12px,3vw,40px);
   }
   *{box-sizing:border-box;}
+  /* Warm ivory paper, like the printed invitation: a faint fractal-noise grain
+     over the base colour, with terracotta warming the corners. */
   body{
     margin:0;
-    background:var(--white);
+    padding:0 var(--band);
+    background-color:var(--paper);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .3 0 0 0 0 .18 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      radial-gradient(ellipse at 0% 0%,rgba(180,83,42,0.10),transparent 45%),
+      radial-gradient(ellipse at 100% 100%,rgba(180,83,42,0.10),transparent 45%);
+    background-attachment:scroll,fixed,fixed;
     color:var(--ink);
     font-family:'Montserrat',sans-serif;
     -webkit-font-smoothing:antialiased;
   }
+
+  /* Woven terracotta / olive / gold diamond bands down both edges, after the
+     aso-oke border on the invitation card. */
+  .dj-band{
+    position:fixed;
+    top:0;
+    bottom:0;
+    width:var(--band);
+    z-index:50;
+    pointer-events:none;
+    background-color:#a9461f;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Crect width='28' height='28' fill='%23a9461f'/%3E%3Cpath d='M14 1.5 26.5 14 14 26.5 1.5 14Z' fill='none' stroke='%23d9b968' stroke-width='1.6'/%3E%3Cpath d='M14 7 21 14 14 21 7 14Z' fill='%235f6a2e'/%3E%3Cpath d='M14 11 17 14 14 17 11 14Z' fill='%23e8cf8f'/%3E%3Cpath d='M0 0 3 0 0 3ZM28 0 25 0 28 3ZM0 28 3 28 0 25ZM28 28 25 28 28 25Z' fill='%235f6a2e'/%3E%3C/svg%3E");
+    background-size:min(var(--band),28px) auto;
+    background-position:center top;
+    box-shadow:0 0 18px rgba(142,59,27,0.25);
+  }
+  .dj-band--left{left:0;border-right:3px double var(--gold-light);}
+  .dj-band--right{right:0;border-left:3px double var(--gold-light);}
   .dj-wrap{max-width:820px;margin:0 auto;}
   .dj-serif{font-family:'Cormorant Garamond',Garamond,'Times New Roman',serif;}
 
@@ -59,7 +87,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
   .dj-hero{
     position:relative;
     text-align:center;
-    padding:clamp(40px,8vw,72px) 20px clamp(44px,8vw,72px);
+    padding:clamp(32px,8vw,72px) clamp(12px,3vw,20px) clamp(40px,8vw,72px);
     overflow:hidden;
   }
   /* thin gold double frame around the invitation, like a printed card */
@@ -67,10 +95,12 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     position:relative;
     max-width:760px;
     margin:0 auto;
-    padding:clamp(34px,7vw,64px) clamp(18px,5vw,56px);
+    padding:clamp(34px,7vw,64px) clamp(16px,5vw,56px);
+    background:var(--ivory);
     border:1px solid var(--line);
     outline:1px solid var(--line);
     outline-offset:-10px;
+    box-shadow:0 20px 50px rgba(142,59,27,0.10);
   }
 
   .dj-logo{
@@ -151,21 +181,34 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
   }
 
   .dj-couple{margin:0;}
+  /* Matches the printed invitation: Cinzel sets lowercase as small caps, so
+     "Oluwadara Harriet" reads as tall initials over small capitals. Each name
+     stays on one line, scaled with the viewport so it fits on phones. */
   .dj-couple-name{
     display:block;
-    font-family:'Great Vibes',cursive;
-    font-weight:400;
-    font-size:clamp(2rem,7vw,3.3rem);
-    line-height:1.2;
-    color:var(--terracotta);
+    font-family:'Cinzel','Trajan Pro',Georgia,serif;
+    font-weight:600;
+    font-size:min(6.4vw,3.4rem);
+    line-height:1.15;
+    letter-spacing:0.01em;
+    white-space:nowrap;
+    background:linear-gradient(180deg,#c4461f 0%,var(--terracotta-deep) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
   }
   .dj-couple-amp{
     display:block;
-    font-family:'Great Vibes',cursive;
-    font-size:clamp(1.8rem,5vw,2.3rem);
-    color:var(--gold);
-    margin:8px 0;
-    line-height:1;
+    font-family:'Cormorant Garamond',Garamond,serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:min(13vw,4.4rem);
+    line-height:0.9;
+    margin:2px 0 4px;
+    background:linear-gradient(180deg,var(--gold-light) 0%,var(--gold) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
   }
 
   .dj-rule{
@@ -211,15 +254,16 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
   .dj-countdown{
     display:flex;
     justify-content:center;
-    gap:clamp(8px,2.5vw,18px);
+    gap:clamp(6px,2.5vw,18px);
     margin:clamp(26px,5vw,36px) 0 0;
-    flex-wrap:wrap;
   }
+  /* four boxes share the row evenly, so they never wrap on a narrow phone */
   .dj-count-box{
-    min-width:clamp(60px,16vw,78px);
-    padding:12px 8px 10px;
+    flex:1 1 0;
+    max-width:84px;
+    padding:12px 4px 10px;
     border:1px solid var(--line);
-    background:var(--ivory);
+    background:var(--white);
   }
   .dj-count-num{
     display:block;
@@ -237,10 +281,13 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     text-transform:uppercase;
     color:var(--muted);
   }
+  @media (max-width:420px){
+    .dj-count-lbl{font-size:0.5rem;letter-spacing:0.08em;}
+  }
 
   /* ---------- COLOURS OF THE DAY ---------- */
   .dj-strip{
-    background:var(--ivory);
+    background:rgba(180,83,42,0.07);
     border-top:1px solid var(--line);
     border-bottom:1px solid var(--line);
     padding:clamp(34px,6vw,52px) 20px;
@@ -506,6 +553,9 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
 </head>
 <body>
 
+<div class="dj-band dj-band--left" aria-hidden="true"></div>
+<div class="dj-band dj-band--right" aria-hidden="true"></div>
+
 <header class="dj-hero">
   <div class="dj-frame">
     <?php if (DJ_LOGO_URL !== ''): ?>
@@ -538,9 +588,9 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     <p class="dj-request dj-serif" style="margin-top:0;">of their children</p>
 
     <h1 class="dj-couple">
-      <span class="dj-couple-name">Fagbohun Oluwadara Harriet</span>
+      <span class="dj-couple-name">Oluwadara Harriet</span>
       <span class="dj-couple-amp" aria-hidden="true">&amp;</span>
-      <span class="dj-couple-name">Ojuederie Ediri Justice</span>
+      <span class="dj-couple-name">Ediri Justice</span>
     </h1>
 
     <hr class="dj-rule">
