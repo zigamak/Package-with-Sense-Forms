@@ -37,6 +37,9 @@ packagewithsense_forms/            (WordPress root in production)
   casmiar-nwaigwe/
     index.php                      birthday celebration RSVP page
     casmiar-nwaigwe.gs             Apps Script -> "casmiar-nwaigwe" tab
+  dara-justice/
+    index.php                      traditional wedding RSVP page (#DeeJay26)
+    dara-justice.gs                Apps Script -> "dara-justice" tab
 ```
 
 Each form page is a **self-contained landing page** (hero slider, countdown, wedding
@@ -55,7 +58,7 @@ That constant drives the guestbook query and the notes form's hidden input. Slug
 listed in `PWS_ALLOWED_FORMS` (`rsvp-core/config.php`), currently:
 
 ```php
-const PWS_ALLOWED_FORMS = ['trad-white', 'white-only', 'eto-60', 'ayodele-elochukwu', 'casmiar-nwaigwe'];
+const PWS_ALLOWED_FORMS = ['trad-white', 'white-only', 'eto-60', 'ayodele-elochukwu', 'casmiar-nwaigwe', 'dara-justice'];
 ```
 
 | Page | `PWS_FORM_SLUG` | Sheet tab |
@@ -65,6 +68,7 @@ const PWS_ALLOWED_FORMS = ['trad-white', 'white-only', 'eto-60', 'ayodele-elochu
 | `eto-60/` | `eto-60` | `eto-60` (`eto-60/eto-60.gs`) |
 | `ayodele-elochukwu/` | `ayodele-elochukwu` | `ayodele-elochukwu` (`ayodele-elochukwu/ayodele-elochukwu.gs`) |
 | `casmiar-nwaigwe/` | `casmiar-nwaigwe` | `casmiar-nwaigwe` (`casmiar-nwaigwe/casmiar-nwaigwe.gs`) |
+| `dara-justice/` | `dara-justice` | `dara-justice` (`dara-justice/dara-justice.gs`) |
 
 `eto-60/` is a standalone RSVP page for a 60th birthday — navy/royal/gold, four fields
 (Title, Name, Phone, Attending), no guestbook and no uploads. `title` and `attending` are
@@ -74,6 +78,11 @@ form-specific field.
 `ayodele-elochukwu/` (Title, Full Name, Phone, Email, Number Attending, Guest Name(s),
 Message) and `casmiar-nwaigwe/` (the same plus Attending and a hotel room reservation)
 follow the same pattern.
+
+`dara-justice/` is Dara & Justice's traditional wedding — white with terracotta and gold,
+fields Title, Full Name, WhatsApp Number (posted as `phone`), Attending, and "How are you
+related to the couple?" (posted as `rsvp_category`). The logo is loaded from the
+WordPress media library via `DJ_LOGO_URL` at the top of the page.
 
 Each of these three pages has its own Apps Script next to its `index.php` (see
 "Per-form Apps Script"). The two Sinmi & Warami pages predate that convention and use the
