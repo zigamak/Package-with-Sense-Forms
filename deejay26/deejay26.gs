@@ -4,7 +4,7 @@
  * the destination Google Sheet.
  *
  * Setup:
- *   1. Open the destination Google Sheet. The "dara-justice" tab is
+ *   1. Open the destination Google Sheet. The "deejay26" tab is
  *      created automatically on the first sync if it doesn't exist.
  *   2. Extensions -> Apps Script, paste this whole file in, save.
  *   3. In the Apps Script editor, replace PASTE_SYNC_API_KEY_HERE below with
@@ -24,7 +24,7 @@
  *                     last_seen_id. Use after deleting rows by mistake or
  *                     changing COLUMNS.
  *
- * Form fields (dara-justice/index.php) -> where they arrive from get-new.php:
+ * Form fields (deejay26/index.php) -> where they arrive from get-new.php:
  *   full_name, phone, rsvp_category        top-level columns
  *   title, attending                       payload JSON
  *
@@ -32,7 +32,7 @@
  * script pages through them and keeps only form_slug 'dara-justice'.
  */
 
-const SHEET_NAME = 'dara-justice';
+const SHEET_NAME = 'deejay26';
 const FORM_SLUG = 'dara-justice';
 // Currently deployed under /forms/ — drop that segment if/when the folders
 // move to the WordPress root.

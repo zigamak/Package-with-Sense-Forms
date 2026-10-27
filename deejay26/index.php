@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/../rsvp-core/config.php';
+require_once __DIR__ . '/../rsvp-core/share.php';
 
 const PWS_FORM_SLUG = 'dara-justice';
 
@@ -18,6 +19,13 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dara &amp; Justice Traditional Wedding RSVP</title>
+  <?= pws_share_meta([
+      'dir'         => __DIR__,
+      'title'       => 'Dara & Justice — Traditional Wedding RSVP',
+      'description' => 'Tuesday, 15th December 2026 · 2:00pm. Kindly confirm your attendance. #DeeJay26',
+      'image_alt'   => 'Dara & Justice #DeeJay26 — Traditional Wedding, 15th December 2026',
+  ]) ?>
+  <meta name="theme-color" content="#b4532a">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -70,7 +78,9 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     width:clamp(150px,34vw,220px);
     height:auto;
     margin:0 auto clamp(22px,4vw,32px);
-    /* the logo has an off-white ground; multiply lets it melt into the page */
+    /* the logo has a light grey ground; brightening lifts it to pure white and
+       multiply then melts any remainder into the page */
+    filter:brightness(1.12);
     mix-blend-mode:multiply;
   }
   .dj-logo-placeholder{
@@ -145,18 +155,9 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     display:block;
     font-family:'Great Vibes',cursive;
     font-weight:400;
-    font-size:clamp(2.3rem,8.5vw,3.8rem);
-    line-height:1.15;
+    font-size:clamp(2rem,7vw,3.3rem);
+    line-height:1.2;
     color:var(--terracotta);
-  }
-  .dj-couple-full{
-    display:block;
-    font-family:'Cormorant Garamond',Garamond,serif;
-    font-size:clamp(0.86rem,2.4vw,1rem);
-    letter-spacing:0.22em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin-top:2px;
   }
   .dj-couple-amp{
     display:block;
@@ -537,11 +538,9 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     <p class="dj-request dj-serif" style="margin-top:0;">of their children</p>
 
     <h1 class="dj-couple">
-      <span class="dj-couple-name">Oluwadara</span>
-      <span class="dj-couple-full">Fagbohun Oluwadara Harriet</span>
+      <span class="dj-couple-name">Fagbohun Oluwadara Harriet</span>
       <span class="dj-couple-amp" aria-hidden="true">&amp;</span>
-      <span class="dj-couple-name">Ediri Justice</span>
-      <span class="dj-couple-full">Ojuederie Ediri Justice</span>
+      <span class="dj-couple-name">Ojuederie Ediri Justice</span>
     </h1>
 
     <hr class="dj-rule">

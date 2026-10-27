@@ -15,6 +15,7 @@ packagewithsense_forms/            (WordPress root in production)
     note-submit.php                public guestbook POST handler ("SWeetLove notes")
     get-new.php                    read-only RSVP sync endpoint for the Apps Script (key-protected)
     get-notes.php                  read-only guestbook endpoint (public, no key — meant to be displayed)
+    share.php                      pws_share_meta(): link-preview tags for WhatsApp etc.
     schema.sql                     rsvp_submissions + guest_notes tables
     apps-script.gs                 generic reference Apps Script (all forms -> "RSVPs" tab)
     apps-script-sinmi-warami.gs            no slug filter -> "sinmi-warami" tab
@@ -37,9 +38,10 @@ packagewithsense_forms/            (WordPress root in production)
   casmiar-nwaigwe/
     index.php                      birthday celebration RSVP page
     casmiar-nwaigwe.gs             Apps Script -> "casmiar-nwaigwe" tab
-  dara-justice/
-    index.php                      traditional wedding RSVP page (#DeeJay26)
-    dara-justice.gs                Apps Script -> "dara-justice" tab
+  deejay26/
+    index.php                      Dara & Justice traditional wedding RSVP page
+    deejay26.gs                    Apps Script -> "deejay26" tab
+    assets/share.jpg               1200x630 link-preview image
 ```
 
 Each form page is a **self-contained landing page** (hero slider, countdown, wedding
@@ -68,7 +70,7 @@ const PWS_ALLOWED_FORMS = ['trad-white', 'white-only', 'eto-60', 'ayodele-elochu
 | `eto-60/` | `eto-60` | `eto-60` (`eto-60/eto-60.gs`) |
 | `ayodele-elochukwu/` | `ayodele-elochukwu` | `ayodele-elochukwu` (`ayodele-elochukwu/ayodele-elochukwu.gs`) |
 | `casmiar-nwaigwe/` | `casmiar-nwaigwe` | `casmiar-nwaigwe` (`casmiar-nwaigwe/casmiar-nwaigwe.gs`) |
-| `dara-justice/` | `dara-justice` | `dara-justice` (`dara-justice/dara-justice.gs`) |
+| `deejay26/` | `dara-justice` | `deejay26` (`deejay26/deejay26.gs`) |
 
 `eto-60/` is a standalone RSVP page for a 60th birthday — navy/royal/gold, four fields
 (Title, Name, Phone, Attending), no guestbook and no uploads. `title` and `attending` are
@@ -79,7 +81,8 @@ form-specific field.
 Message) and `casmiar-nwaigwe/` (the same plus Attending and a hotel room reservation)
 follow the same pattern.
 
-`dara-justice/` is Dara & Justice's traditional wedding — white with terracotta and gold,
+`deejay26/` (named after the couple's hashtag; its slug stays `dara-justice`, the
+folder's original name) is Dara & Justice's traditional wedding — white with terracotta and gold,
 fields Title, Full Name, WhatsApp Number (posted as `phone`), Attending, and "How are you
 related to the couple?" (posted as `rsvp_category`). The logo is loaded from the
 WordPress media library via `DJ_LOGO_URL` at the top of the page.
@@ -361,10 +364,41 @@ No schema or backend changes needed:
 7. **Create the form's Google Apps Script** — every form page ships with one, at
    `<folder>/<folder>.gs` (see "Per-form Apps Script" below). Without it the RSVPs are
    stored in the database but never reach a Google Sheet.
-8. Want a guestbook on the new page too? Copy the `sw2-notes-*` markup/CSS/JS block from
+8. **Give it a link preview.** Without one, WhatsApp shows only the bare domain when the
+   link is shared. See "Link previews" below.
+9. Want a guestbook on the new page too? Copy the `sw2-notes-*` markup/CSS/JS block from
    an existing page — it POSTs to `note-submit.php` and reads back via a server-side query
    against `guest_notes` scoped to your new `form_slug`. No backend changes needed there
    either.
+
+## Link previews
+
+`rsvp-core/share.php` provides `pws_share_meta()`, which prints the Open Graph and
+Twitter card tags that WhatsApp, iMessage, Facebook, X and Slack read to build the card
+under a shared link. Call it in `<head>`, right after `<title>`:
+
+```php
+require_once __DIR__ . '/../rsvp-core/share.php';
+```
+
+```php
+<?= pws_share_meta([
+    'dir'         => __DIR__,
+    'title'       => 'Dara & Justice — Traditional Wedding RSVP',
+    'description' => 'Tuesday, 15th December 2026 · 2:00pm. Kindly confirm your attendance.',
+    'image_alt'   => 'Dara & Justice #DeeJay26',
+]) ?>
+```
+
+The page URL is built from `PWS_SITE_URL` plus the folder name, and the image defaults
+to `<folder>/assets/share.jpg`. Make that image **1200x630, JPG, under 300KB**: WhatsApp
+shows the large card only for a wide-enough image and silently drops heavy ones. The
+image URL gets `?v=<file mtime>` appended, so replacing the file makes crawlers fetch the
+new one.
+
+WhatsApp caches a preview per URL for a while. To check a change, share the link with
+something appended, e.g. `.../deejay26/?v=2`, or run it through
+<https://developers.facebook.com/tools/debug/> and press "Scrape Again".
 
 ## Per-form Apps Script
 
