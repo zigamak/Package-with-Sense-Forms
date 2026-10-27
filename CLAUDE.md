@@ -23,6 +23,8 @@ before adding or changing a form. Pushing to `main` deploys to production automa
 
 - `SYNC_API_KEY` in `.gs` files stays `PASTE_SYNC_API_KEY_HERE`. The repo is public.
 - Never commit `rsvp-core/.env`, `uploads/` or `logs/`.
-- Deploys never delete files, so renaming a folder leaves the old URL live on the server.
-  Keep the old slug in `PWS_ALLOWED_FORMS` until that old folder is removed in cPanel.
+- Deploys never delete files, so renaming a folder leaves the old page live on the server.
+  Replace the old `index.php` with a 301 redirect to the new folder (see
+  `dara-justice/index.php`), which also drops it from the forms index, and keep the old
+  slug in `PWS_ALLOWED_FORMS`.
 - Stage explicit paths. Never `git add .`.
