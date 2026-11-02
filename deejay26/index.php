@@ -7,7 +7,7 @@ const PWS_FORM_SLUG = 'dara-justice';
 
 // WordPress media URL of the DeeJay26 logo. Set to '' and a text monogram
 // stands in for it.
-const DJ_LOGO_URL = 'https://eventio.africa/wp-content/uploads/2026/10/DeeJay26-logo.png';
+const DJ_LOGO_URL = 'https://eventio.africa/wp-content/uploads/2026/11/DF-.png';
 
 $submitted = ($_GET['submitted'] ?? '') === '1';
 $failed    = ($_GET['submitted'] ?? '') === '0';
@@ -108,10 +108,6 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
     width:clamp(150px,34vw,220px);
     height:auto;
     margin:0 auto clamp(22px,4vw,32px);
-    /* the logo has a light grey ground; brightening lifts it to pure white and
-       multiply then melts any remainder into the page */
-    filter:brightness(1.12);
-    mix-blend-mode:multiply;
   }
   .dj-logo-placeholder{
     width:clamp(120px,28vw,160px);
@@ -574,7 +570,7 @@ $actionUrl = PWS_SITE_URL . '/rsvp-core/submit.php';
         </div>
         <div class="dj-amp" aria-hidden="true">&amp;</div>
         <div class="dj-family">
-          <p>Chief David B. Ojuederie</p>
+          <p>Chief David B. Ojuederie JP</p>
           <p>Mrs Flora O. Ojuederie</p>
           <p class="dj-nee">(n&eacute;e Umukoro)</p>
         </div>
