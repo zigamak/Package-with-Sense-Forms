@@ -4,6 +4,9 @@ require_once __DIR__ . '/../rsvp-core/config.php';
 
 const PWS_FORM_SLUG = 'trad-white';
 
+// RSVPs closed. The form below is only hidden, not removed: set this to false to reopen it.
+const PWS_FORM_CLOSED = true;
+
 $submitted     = ($_GET['submitted'] ?? '') === '1';
 $failed        = ($_GET['submitted'] ?? '') === '0';
 $noteSubmitted = ($_GET['note_submitted'] ?? '') === '1';
@@ -395,6 +398,16 @@ $guestNotes = $notesStmt->fetchAll();
       font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.05rem; color: var(--ink);
     }
 
+    /* ---------- RSVP CLOSED NOTICE ---------- */
+    .sw2-closed { text-align: center; padding: 20px 0 6px; }
+    .sw2-closed h4 {
+      font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--primary); margin: 0 0 12px;
+    }
+    .sw2-closed p {
+      font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.05rem;
+      color: var(--ink); line-height: 1.7; margin: 0;
+    }
+
     /* ---------- SWEETLOVE NOTES (public guestbook) ---------- */
     .sw2-notes-section { background: #fff; padding-top: 0; }
     .sw2-notes-card {
@@ -619,12 +632,19 @@ $guestNotes = $notesStmt->fetchAll();
     <h3 class="sw2-form-heading">Confirm Your Attendance</h3>
     <span class="sw2-form-sub">Traditional &bull; 12 Dec &nbsp;|&nbsp; White &bull; 21 Dec 2026</span>
 
-    <div class="sw2-confirmation" id="sw2-confirmation" <?= $submitted ? '' : 'hidden' ?>>
+    <?php if (PWS_FORM_CLOSED): ?>
+    <div class="sw2-closed" id="sw2-closed">
+      <h4>RSVPs Are Now Closed</h4>
+      <p>Thank you so much for your interest. Our RSVP list is now closed.<br>#SWeetLove</p>
+    </div>
+    <?php endif; ?>
+
+    <div class="sw2-confirmation" id="sw2-confirmation" <?= ($submitted && !PWS_FORM_CLOSED) ? '' : 'hidden' ?>>
       <h4>Thank You!</h4>
       <p>Your RSVP has been received - see you there! 🎉<br>#SWeetLove</p>
     </div>
 
-    <form class="sw2-rsvp-form" id="sw2-rsvp-form" action="<?= htmlspecialchars($actionUrl, ENT_QUOTES) ?>" method="post" novalidate <?= $submitted ? 'hidden' : '' ?>>
+    <form class="sw2-rsvp-form" id="sw2-rsvp-form" action="<?= htmlspecialchars($actionUrl, ENT_QUOTES) ?>" method="post" novalidate <?= ($submitted || PWS_FORM_CLOSED) ? 'hidden' : '' ?>>
       <input type="hidden" name="form_slug" value="trad-white">
 
       <div class="sw2-field-row">

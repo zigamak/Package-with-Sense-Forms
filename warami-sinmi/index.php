@@ -4,6 +4,9 @@ require_once __DIR__ . '/../rsvp-core/config.php';
 
 const PWS_FORM_SLUG = 'white-only';
 
+// RSVPs closed. The form below is only hidden, not removed: set this to false to reopen it.
+const PWS_FORM_CLOSED = true;
+
 $submitted     = ($_GET['submitted'] ?? '') === '1';
 $failed        = ($_GET['submitted'] ?? '') === '0';
 $noteSubmitted = ($_GET['note_submitted'] ?? '') === '1';
@@ -459,6 +462,16 @@ function pws_note_page_url(int $page): string {
       font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.05rem; color: var(--ink);
     }
 
+    /* ---------- RSVP CLOSED NOTICE ---------- */
+    .sw2-closed { text-align: center; padding: 20px 0 6px; }
+    .sw2-closed h4 {
+      font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--primary); margin: 0 0 12px;
+    }
+    .sw2-closed p {
+      font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.05rem;
+      color: var(--ink); line-height: 1.7; margin: 0;
+    }
+
     /* ---------- SWEETLOVE NOTES (public guestbook) ---------- */
     .sw2-notes-section { background: #fff; padding-top: 0; }
     .sw2-notes-card {
@@ -707,12 +720,19 @@ function pws_note_page_url(int $page): string {
     <div style="text-align:center;margin:14px 0 26px;">
       <a href="https://www.waramiandsinmi.com/faq" target="_blank" rel="noopener" style="display:inline-block;font-family:'Montserrat',sans-serif;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;color:var(--primary);border:1px solid var(--primary);border-radius:999px;padding:8px 20px;text-decoration:none;transition:all .3s;">FAQ</a>
     </div>
-    <div class="sw2-confirmation" id="sw2-confirmation" <?= $submitted ? '' : 'hidden' ?>>
+    <?php if (PWS_FORM_CLOSED): ?>
+    <div class="sw2-closed" id="sw2-closed">
+      <h4>RSVPs Are Now Closed</h4>
+      <p>Thank you so much for your interest. Our RSVP list is now closed.<br>#SWeetLove</p>
+    </div>
+    <?php endif; ?>
+
+    <div class="sw2-confirmation" id="sw2-confirmation" <?= ($submitted && !PWS_FORM_CLOSED) ? '' : 'hidden' ?>>
       <h4>Thank You!</h4>
       <p>Your RSVP has been received - see you there! 🎉<br>#SWeetLove</p>
     </div>
 
-    <form class="sw2-rsvp-form" id="sw2-rsvp-form" action="<?= htmlspecialchars($actionUrl, ENT_QUOTES) ?>" method="post" enctype="multipart/form-data" novalidate <?= $submitted ? 'hidden' : '' ?>>
+    <form class="sw2-rsvp-form" id="sw2-rsvp-form" action="<?= htmlspecialchars($actionUrl, ENT_QUOTES) ?>" method="post" enctype="multipart/form-data" novalidate <?= ($submitted || PWS_FORM_CLOSED) ? 'hidden' : '' ?>>
       <input type="hidden" name="form_slug" value="white-only">
 
       <div class="sw2-field">
