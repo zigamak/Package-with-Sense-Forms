@@ -463,13 +463,23 @@ function pws_note_page_url(int $page): string {
     }
 
     /* ---------- RSVP CLOSED NOTICE ---------- */
-    .sw2-closed { text-align: center; padding: 20px 0 6px; }
+    .sw2-closed {
+      text-align: center; padding: 28px 20px 30px; margin-top: 6px;
+      border-top: 1px solid rgba(200,155,60,0.45); border-bottom: 1px solid rgba(200,155,60,0.45);
+    }
     .sw2-closed h4 {
-      font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--primary); margin: 0 0 12px;
+      font-family: 'Playfair Display', serif; font-weight: 600; font-style: normal;
+      font-size: clamp(1.5rem, 4vw, 2rem); letter-spacing: 0.02em; word-spacing: 0.12em;
+      line-height: 1.3; color: var(--primary) !important; background: none;
+      margin: 0 0 14px;
     }
     .sw2-closed p {
-      font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.05rem;
-      color: var(--ink); line-height: 1.7; margin: 0;
+      font-family: 'Montserrat', sans-serif; font-style: normal; font-size: 0.95rem;
+      color: var(--ink) !important; line-height: 1.8; margin: 0;
+    }
+    .sw2-closed .sw2-closed-tag {
+      display: block; margin-top: 10px; font-family: 'Montserrat', sans-serif; font-weight: 600;
+      font-size: 0.75rem; letter-spacing: 0.25em; color: var(--accent) !important;
     }
 
     /* ---------- SWEETLOVE NOTES (public guestbook) ---------- */
@@ -723,7 +733,8 @@ function pws_note_page_url(int $page): string {
     <?php if (PWS_FORM_CLOSED): ?>
     <div class="sw2-closed" id="sw2-closed">
       <h4>RSVPs Are Now Closed</h4>
-      <p>Thank you so much for your interest. Our RSVP list is now closed.<br>#SWeetLove</p>
+      <p>Thank you so much for your interest. Our RSVP list is now closed.</p>
+      <span class="sw2-closed-tag">#SWeetLove</span>
     </div>
     <?php endif; ?>
 
