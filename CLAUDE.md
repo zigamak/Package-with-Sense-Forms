@@ -16,8 +16,19 @@ before adding or changing a form. Pushing to `main` deploys to production automa
    it, a link shared on WhatsApp shows only the bare domain. See "Link previews" in
    README.md.
 4. An Apps Script at `<folder>/<folder>.gs`, copied from an existing one, with
-   `FORM_SLUG` matching the page's slug.
+   `FORM_SLUG` matching the page's slug and one `COLUMNS` entry per form field.
 5. A row in the README tables.
+
+## Apps Scripts: always, for every form folder
+
+- **Every folder with an `index.php` gets its own `<folder>/<folder>.gs`.** That includes
+  redirect stubs left by renames (e.g. `dara-justice/`), which sync the old slug.
+- Whenever you add, change or rename a form, write or update its `.gs` in the same
+  change. If a form's fields change, update its `COLUMNS` and `VALUE_LABELS` too.
+- Before finishing any task here, check that every form folder has its `.gs`, and write
+  any that are missing, without being asked.
+- `SYNC_API_KEY` is the same key for every form, but it is only pasted in the Apps Script
+  editor (see Rules).
 
 ## Rules
 

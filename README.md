@@ -18,8 +18,6 @@ packagewithsense_forms/            (WordPress root in production)
     share.php                      pws_share_meta(): link-preview tags for WhatsApp etc.
     schema.sql                     rsvp_submissions + guest_notes tables
     apps-script.gs                 generic reference Apps Script (all forms -> "RSVPs" tab)
-    apps-script-sinmi-warami.gs            no slug filter -> "sinmi-warami" tab
-    apps-script-sinmi-warami-trad-white.gs filters 'trad-white' -> "sinmi-warami-trad-white" tab
     uploads/                       proof-of-payment files (locked down, gitignored)
     logs/                          php-error.log (locked down, gitignored)
     .htaccess                      blocks direct access to config/schema/.env
@@ -27,8 +25,10 @@ packagewithsense_forms/            (WordPress root in production)
     .env                           local secrets (gitignored, not committed)
   sinmi-warami-trad-white/
     index.php                      full landing page + Traditional+White RSVP + notes wall
+    sinmi-warami-trad-white.gs     Apps Script -> "sinmi-warami-trad-white" tab
   warami-sinmi/
     index.php                      full landing page + White-only RSVP + notes wall
+    warami-sinmi.gs                Apps Script -> "warami-sinmi" tab
   eto-60/
     index.php                      60th birthday RSVP page
     eto-60.gs                      Apps Script -> "eto-60" tab
@@ -42,6 +42,9 @@ packagewithsense_forms/            (WordPress root in production)
     index.php                      Dara & Justice traditional wedding RSVP page
     deejay26.gs                    Apps Script -> "deejay26" tab
     assets/share.jpg               1200x630 link-preview image
+  dara-justice/
+    index.php                      301 redirect to deejay26/ (the folder's old name)
+    dara-justice.gs                Apps Script -> "dara-justice" tab (same RSVPs as deejay26.gs)
 ```
 
 Each form page is a **self-contained landing page** (hero slider, countdown, wedding
@@ -65,12 +68,13 @@ const PWS_ALLOWED_FORMS = ['trad-white', 'white-only', 'eto-60', 'ayodele-elochu
 
 | Page | `PWS_FORM_SLUG` | Sheet tab |
 |---|---|---|
-| `sinmi-warami-trad-white/` | `trad-white` | `sinmi-warami-trad-white` |
-| `warami-sinmi/` | `white-only` | `sinmi-warami` (unfiltered — see below) |
+| `sinmi-warami-trad-white/` | `trad-white` | `sinmi-warami-trad-white` (`sinmi-warami-trad-white/sinmi-warami-trad-white.gs`) |
+| `warami-sinmi/` | `white-only` | `warami-sinmi` (`warami-sinmi/warami-sinmi.gs`) |
 | `eto-60/` | `eto-60` | `eto-60` (`eto-60/eto-60.gs`) |
 | `ayodele-elochukwu/` | `ayodele-elochukwu` | `ayodele-elochukwu` (`ayodele-elochukwu/ayodele-elochukwu.gs`) |
 | `casmiar-nwaigwe/` | `casmiar-nwaigwe` | `casmiar-nwaigwe` (`casmiar-nwaigwe/casmiar-nwaigwe.gs`) |
 | `deejay26/` | `dara-justice` | `deejay26` (`deejay26/deejay26.gs`) |
+| `dara-justice/` (redirect) | `dara-justice` | `dara-justice` (`dara-justice/dara-justice.gs`) |
 
 `eto-60/` is a standalone RSVP page for a 60th birthday — navy/royal/gold, four fields
 (Title, Name, Phone, Attending), no guestbook and no uploads. `title` and `attending` are
@@ -87,9 +91,9 @@ fields Title, Full Name, WhatsApp Number (posted as `phone`), Attending, and "Ho
 related to the couple?" (posted as `rsvp_category`). The logo is loaded from the
 WordPress media library via `DJ_LOGO_URL` at the top of the page.
 
-Each of these three pages has its own Apps Script next to its `index.php` (see
-"Per-form Apps Script"). The two Sinmi & Warami pages predate that convention and use the
-scripts in `rsvp-core/`.
+Every form folder has its own Apps Script next to its `index.php`, including the two
+Sinmi & Warami pages and the `dara-justice/` redirect (see "Per-form Apps Script").
+`dara-justice.gs` and `deejay26.gs` sync the same `dara-justice` RSVPs; use one per Sheet.
 
 ## Why real folders, not `/forms/`
 
@@ -105,8 +109,7 @@ fires when **no real file or directory matches the request**
 - No `/forms/` prefix, no rewrite rules — the clean URL is just where the folder lives.
 
 Note the folder name is the URL. `warami-sinmi/` serves `/warami-sinmi/` even though its
-slug, sheet tab, and Apps Script are all named `sinmi-warami` — renaming the folder
-changes the public URL, nothing else.
+slug is `white-only` — renaming the folder changes the public URL, nothing else.
 
 ## Setup
 
@@ -176,27 +179,15 @@ required here, but `AllowOverride All` (or equivalent) must be enabled for the f
 ### 5. Google Sheet sync
 
 1. Create/open the destination Google Sheet.
-2. Extensions → Apps Script, paste the contents of the appropriate `.gs` file.
-3. Set `SHEET_NAME`, `ENDPOINT_URL` (your domain + `/rsvp-core/get-new.php`), and
-   `SYNC_API_KEY` (must match `rsvp-core/.env`) at the top of the script.
-4. Triggers → Add Trigger → function `syncRsvps` → Time-driven → every 5 minutes.
-5. First run creates the header row from the fixed columns; new `payload` keys get their
-   own column appended automatically as they show up.
+2. Extensions → Apps Script, paste the form's `<folder>/<folder>.gs` (see the table
+   under "Layout", and "Per-form Apps Script" below).
+3. Replace `PASTE_SYNC_API_KEY_HERE` with `rsvp-core/.env`'s `SYNC_API_KEY`. It is the
+   same key for every form.
+4. Run `syncAllRsvps` once, then `syncRsvps` once (it installs its own 1-minute trigger).
 
-Which script to use:
-
-| Script | `SHEET_NAME` | `FORM_SLUG_FILTER` |
-|---|---|---|
-| `apps-script.gs` | `RSVPs` | generic reference version |
-| `apps-script-sinmi-warami.gs` | `sinmi-warami` | `null` — takes every form's submissions |
-| `apps-script-sinmi-warami-trad-white.gs` | `sinmi-warami-trad-white` | `'trad-white'` |
-
-`FORM_SLUG_FILTER = null` means "append every row regardless of slug", so the
-`sinmi-warami` tab collects submissions from **both** pages. The
-`sinmi-warami-trad-white` tab is filtered to `'trad-white'` and therefore holds only that
-form's rows — trad-white RSVPs appear in both tabs by design. Set
-`FORM_SLUG_FILTER = 'white-only'` in `apps-script-sinmi-warami.gs` if you'd rather each
-tab hold exactly one form.
+`rsvp-core/apps-script.gs` is a generic reference that dumps every form into one `RSVPs`
+tab. The old `rsvp-core/apps-script-sinmi-warami*.gs` scripts were replaced by the
+per-folder ones and are in git history.
 
 **The `SYNC_API_KEY` constant in each `.gs` file is a placeholder.** Paste the real key
 (matching `rsvp-core/.env` on the server) into the Apps Script editor for each project —
@@ -478,11 +469,11 @@ Current file fields and the payload keys they produce:
 
 | Form | File field | Payload key |
 |---|---|---|
-| trad-white | `trad_payment_evidence` | `trad_payment_evidence_url` |
-| trad-white | `white_payment_evidence` | `white_payment_evidence_url` |
+| trad-white (older RSVPs only; the page no longer has uploads) | `trad_payment_evidence`, `white_payment_evidence` | `trad_payment_evidence_url`, `white_payment_evidence_url` |
+| white-only | `trad_payment_evidence` | `trad_payment_evidence_url` |
 | white-only | `white_payment_evidence` | `white_payment_evidence_url` |
 
-**The `_url` suffix matters for the Apps Scripts** — `RELEVANT_PAYLOAD_KEYS` must list
+**The `_url` suffix matters for the Apps Scripts**: the `COLUMNS` entry must use
 `white_payment_evidence_url`, not the bare field name, or the column comes out blank.
 
 `rsvp-core/uploads/.htaccess` blocks the folder from ever executing a script, even if a
