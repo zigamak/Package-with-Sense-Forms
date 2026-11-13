@@ -4,8 +4,11 @@ require_once __DIR__ . '/../rsvp-core/config.php';
 
 const PWS_FORM_SLUG = 'white-only';
 
-// RSVPs closed. The form below is only hidden, not removed: set this to false to reopen it.
-const PWS_FORM_CLOSED = true;
+// RSVPs close automatically at this time (Lagos time, Africa/Lagos). After it the form
+// is only hidden, not removed: move the date later to reopen it.
+const PWS_FORM_CLOSES_AT = '2026-11-14 12:00';
+define('PWS_FORM_CLOSED', new DateTimeImmutable('now', new DateTimeZone('Africa/Lagos'))
+    >= new DateTimeImmutable(PWS_FORM_CLOSES_AT, new DateTimeZone('Africa/Lagos')));
 
 $submitted     = ($_GET['submitted'] ?? '') === '1';
 $failed        = ($_GET['submitted'] ?? '') === '0';
