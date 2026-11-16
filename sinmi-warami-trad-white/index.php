@@ -6,7 +6,7 @@ const PWS_FORM_SLUG = 'trad-white';
 
 // RSVPs close automatically at this time (Lagos time, Africa/Lagos). After it the form
 // is only hidden, not removed: move the date later to reopen it.
-const PWS_FORM_CLOSES_AT = '2026-11-17 12:00';
+const PWS_FORM_CLOSES_AT = '2026-11-17 11:30';
 define('PWS_FORM_CLOSED', new DateTimeImmutable('now', new DateTimeZone('Africa/Lagos'))
     >= new DateTimeImmutable(PWS_FORM_CLOSES_AT, new DateTimeZone('Africa/Lagos')));
 
