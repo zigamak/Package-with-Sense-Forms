@@ -114,14 +114,6 @@ if ($phone === '') {
 if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $errors['email'] = 'Enter a valid email address.';
 }
-// Warami & Sinmi (white-only): "Whose Guest Are You?" decides which asoebi and
-// bank details a guest sees, and the couple sorts the list by it, so it must
-// never arrive empty. It used to sit inside the Traditional section, which is
-// disabled (so never posted) for anyone not attending the Traditional.
-if ($formSlug === 'white-only'
-    && !in_array($rsvpCategory, ['Jackson', "Jackson's Guest (Not Family)", 'Adepoju', 'Couple'], true)) {
-    $errors['rsvp_category'] = 'Please choose whose guest you are.';
-}
 if ($guestCount !== '' && !in_array($guestCount, PWS_ALLOWED_GUEST_COUNTS, true)) {
     $errors['guest_count'] = 'Invalid value.';
 }
