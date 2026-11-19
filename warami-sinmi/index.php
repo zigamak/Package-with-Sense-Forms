@@ -746,7 +746,7 @@ function pws_note_page_url(int $page): string {
       <p>Your RSVP has been received - see you there! 🎉<br>#SWeetLove</p>
     </div>
 
-    <form class="sw2-rsvp-form" id="sw2-rsvp-form" action="<?= htmlspecialchars($actionUrl, ENT_QUOTES) ?>" method="post" enctype="multipart/form-data" novalidate <?= ($submitted || PWS_FORM_CLOSED) ? 'hidden' : '' ?>>
+    <form class="sw2-rsvp-form" id="sw2-rsvp-form" action="<?= htmlspecialchars($actionUrl, ENT_QUOTES) ?>" method="post" enctype="multipart/form-data" <?= ($submitted || PWS_FORM_CLOSED) ? 'hidden' : '' ?>>
       <input type="hidden" name="form_slug" value="white-only">
 
       <div class="sw2-field">
@@ -765,6 +765,17 @@ function pws_note_page_url(int $page): string {
         </div>
       </div>
 
+      <div class="sw2-field">
+        <label for="rsvp_category">Whose Guest Are You? <span class="sw2-required">*</span></label>
+        <select id="rsvp_category" name="rsvp_category" required>
+          <option value="">-</option>
+          <option value="Jackson">Jackson</option>
+          <option value="Jackson's Guest (Not Family)">Jackson's Guest (Not Family)</option>
+          <option value="Adepoju">Adepoju</option>
+          <option value="Couple">Couple</option>
+        </select>
+      </div>
+
       <fieldset class="sw2-fieldset">
         <legend>Will you attend the Traditional Wedding - Sat 12 Dec 2026? <span class="sw2-required">*</span></legend>
         <div class="sw2-radio-group">
@@ -778,17 +789,6 @@ function pws_note_page_url(int $page): string {
         <div class="sw2-radio-group">
           <label><input type="radio" name="trad_asoebi_purchase" value="yes" required> Yes</label>
           <label><input type="radio" name="trad_asoebi_purchase" value="no" required> No</label>
-        </div>
-
-        <div class="sw2-field" style="margin-top:18px;">
-          <label for="rsvp_category">Whose Guest Are You? <span class="sw2-required">*</span></label>
-          <select id="rsvp_category" name="rsvp_category" required>
-            <option value="">-</option>
-            <option value="Jackson">Jackson</option>
-            <option value="Jackson's Guest (Not Family)">Jackson's Guest (Not Family)</option>
-            <option value="Adepoju">Adepoju</option>
-            <option value="Couple">Couple</option>
-          </select>
         </div>
 
         <div class="sw2-conditional" hidden data-toggle="trad_asoebi_purchase:yes">
